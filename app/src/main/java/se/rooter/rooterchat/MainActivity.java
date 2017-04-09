@@ -1,6 +1,7 @@
 package se.rooter.rooterchat;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        rooterAuth = FirebaseAuth.getInstance();
+
+        if (rooterAuth.getCurrentUser() != null) {
+            finish();
+            startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+        }
+
         progressDialog = new ProgressDialog(this);
 
         buttonRegister = (Button) findViewById(R.id.buttonRegister);
@@ -49,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
 
-        rooterAuth = FirebaseAuth.getInstance();
+
 
 
 
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (view == textViewSignin) {
-            //Login
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
@@ -95,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Successfully registered and logged in
                 if(task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
 
                     // Registering not working
                 } else {

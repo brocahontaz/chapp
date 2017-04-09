@@ -51,18 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         rooterAuth = FirebaseAuth.getInstance();
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };
+
 
     }
 
@@ -103,7 +92,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rooterAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                //Successfully registered and logged in
+                if(task.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
 
+                    // Registering not working
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to register, please try again", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

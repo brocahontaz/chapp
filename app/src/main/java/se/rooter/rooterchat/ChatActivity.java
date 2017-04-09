@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +47,8 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
 
         textViewUserEmail = (TextView) findViewById(R.id.textViewUser);
 
+        String displayName;
+
         textViewUserEmail.setText("Welcome " + user.getEmail());
 
         buttonLogout = (Button) findViewById(R.id.buttonLogout);
@@ -61,9 +64,21 @@ public class ChatActivity extends AppCompatActivity implements View.OnClickListe
             finish();
             startActivity(new Intent(this, LoginActivity.class));
         }
+
+        if (view == buttonSave) {
+            saveUserInfo();
+        }
     }
 
     private void saveUserInfo() {
+        String nickname = editTextNickname.getText().toString().trim();
 
+        UserInformation userInfo = new UserInformation(nickname);
+
+        FirebaseUser user = rooterAuth.getCurrentUser();
+
+        databaseReference.child(user.getUid()).setValue(userInfo);
+
+        Toast.makeText(this, "Nickname saved", Toast.LENGTH_LONG).show();
     }
 }

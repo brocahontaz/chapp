@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "MainActivity";
+
     private Button buttonRegister;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -40,10 +42,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         rooterAuth = FirebaseAuth.getInstance();
 
+        /*
         if (rooterAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(getApplicationContext(), ChatActivity.class));
         }
+        */
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
 
         progressDialog = new ProgressDialog(this);
 
@@ -74,20 +96,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        rooterAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            rooterAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
     private void registerUser() {
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         // Email empty
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Please enter an email", Toast.LENGTH_SHORT).show();
+            toastMessage("Please enter an email");
             // Stopping further execution
             return;
         }
 
         // Password empty
         if(TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            toastMessage("Please enter a password");
             // Stopping further execution
             return;
         }
@@ -102,17 +138,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //Successfully registered and logged in
                 if(task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                    toastMessage("Registered successfully");
 
                     finish();
                     startActivity(new Intent(getApplicationContext(), ChatActivity.class));
 
                     // Registering not working
                 } else {
-                    Toast.makeText(MainActivity.this, "Failed to register, please try again", Toast.LENGTH_SHORT).show();
+                    toastMessage("Failed to register, please try again");
                 }
             }
         });
 
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

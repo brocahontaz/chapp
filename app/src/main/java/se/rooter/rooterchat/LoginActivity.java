@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "LoginActivity";
 
     private Button buttonLogin;
     private EditText editTextEmailLogin;
@@ -27,6 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressDialog progressDialog;
 
     private FirebaseAuth rooterAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +41,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         rooterAuth = FirebaseAuth.getInstance();
 
         // Check if user is already signed in
+        /*
         if (rooterAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(getApplicationContext(), ChatActivity.class));
         }
+        */
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    Log.d(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
+                    toastMessage("Successfully signed in with " + user.getEmail());
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
 
         editTextEmailLogin = (EditText) findViewById(R.id.editTextEmailLogin);
         editTextPasswordLogin = (EditText) findViewById(R.id.editTextPasswordLogin);
@@ -65,20 +91,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        rooterAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            rooterAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
     private void userLogin() {
         String email = editTextEmailLogin.getText().toString().trim();
         String password = editTextPasswordLogin.getText().toString().trim();
 
         // Email empty
         if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Please enter an email", Toast.LENGTH_SHORT).show();
+            toastMessage("Please enter an email");
             // Stopping further execution
             return;
         }
 
         // Password empty
         if(TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show();
+            toastMessage("Please enter a password");
             // Stopping further execution
             return;
         }
@@ -99,5 +139,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

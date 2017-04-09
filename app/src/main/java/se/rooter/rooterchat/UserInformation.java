@@ -16,4 +16,12 @@ public class UserInformation {
         this.nickname = nickname;
     }
 
+    public String getNickname() {
+        return this.nickname;
+    }
+
+    public void setNickname(String nick) {
+        this.nickname = nick;
+    }
+
 }

@@ -8,9 +8,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*
         if (rooterAuth.getCurrentUser() != null) {
             finish();
-            startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
         */
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     finish();
-                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
 
                 } else {
                     // User is signed out
@@ -78,10 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         buttonRegister.setOnClickListener(this);
         textViewSignin.setOnClickListener(this);
-
-
-
-
 
     }
 
@@ -141,11 +138,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     toastMessage("Registered successfully");
 
                     finish();
-                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+                    //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 
                     // Registering not working
                 } else {
                     toastMessage("Failed to register, please try again");
+                    progressDialog.dismiss();
                 }
             }
         });

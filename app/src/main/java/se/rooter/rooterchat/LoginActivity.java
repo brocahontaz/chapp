@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         /*
         if (rooterAuth.getCurrentUser() != null) {
             finish();
-            startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         }
         */
 
@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Log.d(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
                     toastMessage("Successfully signed in with " + user.getEmail());
                     finish();
-                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
 
                 } else {
                     // User is signed out
@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if (task.isSuccessful()) {
                     finish();
-                    startActivity(new Intent(getApplicationContext(), ChatActivity.class));
+                    //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 }
             }
         });

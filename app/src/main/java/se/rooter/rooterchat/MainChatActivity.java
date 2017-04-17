@@ -67,7 +67,7 @@ public class MainChatActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "TODO", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -88,6 +88,8 @@ public class MainChatActivity extends AppCompatActivity
         textViewMail = (TextView) header.findViewById(R.id.textViewNavMail);
         textViewMail.setText(user.getEmail());
 
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
     }
 
     @Override
@@ -116,6 +118,8 @@ public class MainChatActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
             return true;
         }
 
@@ -132,13 +136,13 @@ public class MainChatActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
         } else if (id == R.id.nav_conversations) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new ConversationsFragment()).commit();
         } else if (id == R.id.nav_friends) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new FriendsFragment()).commit();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_settings) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
         } else if (id == R.id.nav_logout) {
             rooterAuth.signOut();
             finish();

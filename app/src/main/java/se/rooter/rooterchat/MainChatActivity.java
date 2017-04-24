@@ -54,6 +54,11 @@ public class MainChatActivity extends AppCompatActivity
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
+    private Fragment settingsFragment;
+    private Fragment homeFragment;
+    private Fragment friendsFragment;
+    private Fragment conversationsFragment;
+
     public static Bitmap userImg;
 
     @Override
@@ -62,6 +67,11 @@ public class MainChatActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        settingsFragment = new SettingsFragment();
+        homeFragment = new HomeFragment();
+        friendsFragment = new FriendsFragment();
+        conversationsFragment = new ConversationsFragment();
 
         rooterAuth = FirebaseAuth.getInstance();
 
@@ -115,7 +125,7 @@ public class MainChatActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
 
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, homeFragment).addToBackStack("fragBack1").commit();
         }
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -185,7 +195,7 @@ public class MainChatActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
+            setContent(fragmentManager, settingsFragment);
             return true;
         } else if (id == R.id.action_logout) {
             rooterAuth.signOut();
@@ -203,20 +213,36 @@ public class MainChatActivity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.nav_home) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+            setContent(fragmentManager, homeFragment);
         } else if (id == R.id.nav_conversations) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ConversationsFragment()).commit();
+            setContent(fragmentManager, conversationsFragment);
         } else if (id == R.id.nav_friends) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FriendsFragment()).commit();
+            setContent(fragmentManager, friendsFragment);
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_settings) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
+            setContent(fragmentManager, settingsFragment);
         } else if (id == R.id.nav_logout) {
             rooterAuth.signOut();
             finish();
         }
 
+/*
+        if (id == R.id.nav_home) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).addToBackStack("fragBack1").commit();
+        } else if (id == R.id.nav_conversations) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new ConversationsFragment()).addToBackStack("fragBack2").commit();
+        } else if (id == R.id.nav_friends) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new FriendsFragment()).addToBackStack("fragBack3").commit();
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_settings) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).addToBackStack("fragBack4").commit();
+        } else if (id == R.id.nav_logout) {
+            rooterAuth.signOut();
+            finish();
+        }
+*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -253,5 +279,15 @@ public class MainChatActivity extends AppCompatActivity
 
     private void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void setContent(@NonNull FragmentManager fm, @NonNull Fragment fragment) {
+        Fragment current = fm.findFragmentById(R.id.content_frame);
+        if (current == null || !current.getClass().equals(fragment.getClass())) {
+            final String tag = fragment.getClass().getSimpleName();
+            fm.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack(tag).commit();
+        } else {
+            fm.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
     }
 }

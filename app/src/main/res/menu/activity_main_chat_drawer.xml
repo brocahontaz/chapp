@@ -4,12 +4,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
             android:title="@string/nav_home" />
         <item
             android:id="@+id/nav_conversations"
+            android:icon="@drawable/ic_chat"
             android:title="@string/nav_conversations" />
         <item
             android:id="@+id/nav_friends"
+            android:icon="@drawable/ic_friends"
             android:title="@string/nav_friends" />
     </group>
 
@@ -19,9 +22,11 @@
         <menu>
             <item
                 android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
                 android:title="@string/nav_settings" />
             <item
                 android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_power"
                 android:title="@string/nav_logout" />
         </menu>
     </item>

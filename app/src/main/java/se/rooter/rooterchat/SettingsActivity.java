@@ -67,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             }
         };
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
         editTextNickname = (EditText) findViewById(R.id.editTextNickname);
         buttonSave = (Button) findViewById(R.id.buttonSave);
@@ -135,7 +135,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         UserInformation userInfo = new UserInformation(nickname);
 
-        databaseReference.child(user.getUid()).setValue(userInfo);
+        databaseReference.child("users").child(user.getUid()).setValue(userInfo);
 
         toastMessage("Nickname saved");
 
@@ -148,7 +148,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         for (DataSnapshot dats : ds.getChildren()) {
             UserInformation uInfo = new UserInformation();
             if(ds.child(userID).getValue(UserInformation.class) != null) {
-                uInfo.setNickname(ds.child(userID).getValue(UserInformation.class).getNickname());
+                uInfo.setNickname(ds.child("users").child(userID).getValue(UserInformation.class).getNickname());
                     textViewUser.setText(uInfo.getNickname());
             } else {
                 textViewUser.setText(user.getEmail());

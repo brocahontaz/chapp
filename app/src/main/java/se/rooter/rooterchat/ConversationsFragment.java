@@ -7,10 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Rooter on 2017-04-17.
- */
-
 public class ConversationsFragment extends Fragment {
 
     View myView;

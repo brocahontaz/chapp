@@ -2,6 +2,8 @@ package se.rooter.rooterchat;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -16,11 +18,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class MainChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +41,11 @@ public class MainChatActivity extends AppCompatActivity
 
     private TextView textViewMail;
     private TextView textViewName;
+
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
+    public static Bitmap userImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +95,8 @@ public class MainChatActivity extends AppCompatActivity
 
         View header = navigationView.getHeaderView(0);
 
+
+
         user = rooterAuth.getCurrentUser();
 
         textViewMail = (TextView) header.findViewById(R.id.textViewNavMail);
@@ -90,6 +104,29 @@ public class MainChatActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+
+
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference().child("img").child("avatars").child(user.getUid() + "/pic");
+
+        final Bitmap b= BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+
+        storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                userImg = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                userImg = b;
+            }
+        });
+
+        View hView = navigationView.getHeaderView(0);
+        ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
+        navpic.setImageBitmap(userImg);
+
     }
 
     @Override
@@ -121,6 +158,9 @@ public class MainChatActivity extends AppCompatActivity
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
             return true;
+        } else if (id == R.id.action_logout) {
+            rooterAuth.signOut();
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

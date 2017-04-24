@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Rooter on 2017-04-17.
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
 public class HomeFragment extends Fragment {
+
+    private FirebaseAuth rooterAuth;
+    private DatabaseReference databaseReference;
 
     View myView;
 

@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">RooterChat</string>
+    <string name="app_name">Chapp!</string>
+
+    <string name="hello_world">Hello world!</string>
 
     <string name="enter_mail">Enter your email</string>
     <string name="enter_pass">Enter your password</string>
@@ -55,7 +57,11 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_main_chat">MainChatActivity</string>
+    <string name="title_activity_main_chat">Chapp!</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -15,6 +15,8 @@ public class HomeFragment extends Fragment {
     private FirebaseAuth rooterAuth;
     private DatabaseReference databaseReference;
 
+    private static final String TAG = "HomeFragment";
+
     View myView;
 
     @Nullable

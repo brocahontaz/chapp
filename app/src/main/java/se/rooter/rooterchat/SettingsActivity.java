@@ -46,6 +46,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+
         rooterAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -92,6 +93,8 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
         buttonLogout.setOnClickListener(this);
         buttonSave.setOnClickListener(this);
+
+
 
     }
 

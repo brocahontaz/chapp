@@ -1,6 +1,8 @@
 package se.rooter.rooterchat;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -101,9 +103,13 @@ public class MainChatActivity extends AppCompatActivity
 
         textViewMail = (TextView) header.findViewById(R.id.textViewNavMail);
         textViewMail.setText(user.getEmail());
-
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+
+        if (savedInstanceState == null) {
+
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
+        }
+
 
 
         storage = FirebaseStorage.getInstance();

@@ -28,6 +28,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -40,10 +45,12 @@ public class MainChatActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private FirebaseUser user;
+    private String userID;
 
     private TextView textViewMail;
     private TextView textViewName;
 
+    private DatabaseReference databaseReference;
     private FirebaseStorage storage;
     private StorageReference storageReference;
 
@@ -100,17 +107,28 @@ public class MainChatActivity extends AppCompatActivity
 
 
         user = rooterAuth.getCurrentUser();
+        userID = user.getUid();
 
         textViewMail = (TextView) header.findViewById(R.id.textViewNavMail);
+        textViewName = (TextView) header.findViewById(R.id.navNick);
         textViewMail.setText(user.getEmail());
         FragmentManager fragmentManager = getFragmentManager();
 
         if (savedInstanceState == null) {
-
             fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).commit();
         }
 
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference().child("img").child("avatars").child(user.getUid() + "/pic");
@@ -215,6 +233,21 @@ public class MainChatActivity extends AppCompatActivity
         super.onStop();
         if (mAuthListener != null) {
             rooterAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+    private void showData(DataSnapshot ds) {
+        FirebaseUser user = rooterAuth.getCurrentUser();
+        String displayName;
+
+        for (DataSnapshot dats : ds.getChildren()) {
+            UserInformation uInfo = new UserInformation();
+            if(ds.child("users").child(userID).getValue(UserInformation.class) != null) {
+                uInfo.setNickname(ds.child("users").child(userID).getValue(UserInformation.class).getNickname());
+                textViewName.setText(uInfo.getNickname());
+            } else {
+                textViewName.setText("[nameless]");
+            }
         }
     }
 

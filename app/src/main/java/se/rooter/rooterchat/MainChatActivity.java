@@ -110,24 +110,29 @@ public class MainChatActivity extends AppCompatActivity
         storageReference = storage.getReference().child("img").child("avatars").child(user.getUid() + "/pic");
 
         final Bitmap b= BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+        View hView = navigationView.getHeaderView(0);
+        final ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
 
         storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 userImg = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                navpic.setImageBitmap(userImg);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 userImg = b;
+                navpic.setImageBitmap(userImg);
             }
         });
 
-        View hView = navigationView.getHeaderView(0);
-        ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
-        navpic.setImageBitmap(userImg);
+
+        //navpic.setImageBitmap(userImg);
 
     }
+
+
 
     @Override
     public void onBackPressed() {

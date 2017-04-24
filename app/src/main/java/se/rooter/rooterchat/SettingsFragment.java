@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     private String userID;
 
     ImageView avatar;
+
+    NavigationView navigationView;
 
     View myView;
 
@@ -118,6 +121,8 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        navigationView = (NavigationView) getActivity().findViewById(R.id.nav_view);
+
         return myView;
     }
 
@@ -142,6 +147,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                             Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             MainChatActivity.userImg = img;
                             avatar.setImageBitmap(img);
+                            View hView = navigationView.getHeaderView(0);
+                            ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
+                            navpic.setImageBitmap(img);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

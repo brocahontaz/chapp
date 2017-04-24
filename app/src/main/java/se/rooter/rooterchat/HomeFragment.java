@@ -1,30 +1,45 @@
 package se.rooter.rooterchat;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private FirebaseAuth rooterAuth;
     private DatabaseReference databaseReference;
 
+    private ArrayList<ChatInformation> chatInfoList;
+    private ArrayList<String> channels;
+    private ArrayAdapter<ChatInformation> chatArrayAdapter;
+    private ArrayAdapter<String> channelAdapter;
+
     private static final String TAG = "HomeFragment";
 
     private EditText editTextAddChannel;
     private ImageButton buttonAddChannel;
+    private ListView channelListView;
 
     View myView;
 
@@ -36,9 +51,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rooterAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        editTextAddChannel = (EditText) myView.findViewById(R.id.addChannelSub).findViewById(R.id.editTextAddChannel);
-        buttonAddChannel = (ImageButton) myView.findViewById(R.id.addChannelSub).findViewById(R.id.imageButtonAddChannel);
+        editTextAddChannel = (EditText) myView.findViewById(R.id.channelSub).findViewById(R.id.editTextAddChannel);
+        buttonAddChannel = (ImageButton) myView.findViewById(R.id.channelSub).findViewById(R.id.imageButtonAddChannel);
         buttonAddChannel.setOnClickListener(this);
+
+        channelListView = (ListView) myView.findViewById(R.id.channelListView);
+        channelListView.setClickable(true);
+
+        channelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String data = (String) parent.getItemAtPosition(position);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new ChannelFragment(), data).addToBackStack(data).commit();
+                //toastMessage(data);
+            }
+        });
+
+        chatInfoList = new ArrayList<ChatInformation>();
+        channels = new ArrayList<String>();
+
+        databaseReference.child("chatChannels").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
 
 
         return myView;
@@ -69,12 +111,39 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
             });
         } else {
-            toastMessage("Channel couldn't be added");
+            toastMessage("Channels without a name is not allowed");
         }
 
+    }
+
+    private void showData(DataSnapshot ds) {
+        FirebaseUser user = rooterAuth.getCurrentUser();
+        String displayName;
+
+        for (DataSnapshot dats : ds.getChildren()) {
+            ChatInformation chatInfo = new ChatInformation();
+            chatInfo.setChannelName(dats.getValue(ChatInformation.class).getChannelName());
+            //chatInfoList.add(chatInfo);
+            //channels = new ArrayList<String>();
+            if(!channels.contains(chatInfo.getChannelName())) {
+                channels.add(chatInfo.getChannelName());
+            }
+
+            channelAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, channels);
+
+            channelAdapter.sort(new Comparator<String>() {
+                @Override
+                public int compare(String lhs, String rhs) {
+                    return lhs.toLowerCase().compareTo(rhs.toLowerCase());
+                }
+            });
+
+            channelListView.setAdapter(channelAdapter);
 
 
-
+            //chatArrayAdapter = new ArrayAdapter<ChatInformation>(this, R.layout.channel_list_item, chatInfoList);
+            //channelListView.setAdapter(chatArrayAdapter);
+        }
     }
 
     private void toastMessage(String message) {

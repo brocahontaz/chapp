@@ -4,6 +4,9 @@ public class ChatInformation {
 
     private String channelName;
 
+    public ChatInformation() {
+    }
+
     public ChatInformation(String channelName) {
         this.channelName = channelName;
     }

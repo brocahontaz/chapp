@@ -66,22 +66,6 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
 
         storage = FirebaseStorage.getInstance();
 
-        storageRef = storage.getReference().child("img").child("avatars").child(thisUserId + "/pic");
-
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-
-
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = new UserInformation();
 

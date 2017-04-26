@@ -154,12 +154,14 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
                     try {
                         if(getActivity() != null) {
                             msgAdapter = new ChannelAdapter(getActivity(), msgs);
+
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     channelListView.setAdapter(msgAdapter);
+                    channelListView.setSelection(msgAdapter.getCount() - 1);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

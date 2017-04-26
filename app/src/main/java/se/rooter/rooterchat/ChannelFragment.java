@@ -27,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 
 public class ChannelFragment extends Fragment implements View.OnClickListener {
 
@@ -41,6 +42,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     private EditText message;
     private ImageView postArrow;
 
+    private HashSet<ChannelMessage> msgSet;
     private ArrayList<ChannelMessage> msgs;
     private ChannelAdapter msgAdapter;
 
@@ -72,6 +74,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         channelListView = (ListView) myView.findViewById(R.id.channelListView);
 
         msgs = new ArrayList<ChannelMessage>();
+
 
         databaseReference.child("chatChannelMessages").addValueEventListener(new ValueEventListener() {
             @Override
@@ -138,9 +141,12 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
         for (DataSnapshot dats : ds.getChildren()) {
             ChannelMessage msg = dats.getValue(ChannelMessage.class);
+            msg.setMsgID(dats.getKey());
             //toastMessage(msg.getMessage());
             if(msg.getChannel().equals(this.getTag())) {
-                msgs.add(msg);
+                if(!msgs.contains(msg)) {
+                    msgs.add(msg);
+                }
             }
             msgAdapter = new ChannelAdapter(getActivity(), msgs);
 

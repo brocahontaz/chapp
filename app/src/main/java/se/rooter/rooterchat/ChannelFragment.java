@@ -41,6 +41,11 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     private EditText message;
     private ImageView postArrow;
 
+    private ArrayList<ChannelMessage> msgs;
+    private ChannelAdapter msgAdapter;
+
+    private ListView channelListView;
+
     View myView;
 
     @Nullable
@@ -63,6 +68,20 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         message = (EditText) myView.findViewById(R.id.userMessage);
         postArrow = (ImageView) myView.findViewById(R.id.postMessageArrow);
         postArrow.setOnClickListener(this);
+
+        channelListView = (ListView) myView.findViewById(R.id.channelListView);
+
+        msgs = new ArrayList<ChannelMessage>();
+
+        databaseReference.child("chatChannelMessages").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                showData(dataSnapshot);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
         return myView;
     }
@@ -92,6 +111,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             newRef.setValue(msg, new DatabaseReference.CompletionListener() {
                 public void onComplete(DatabaseError dberror, DatabaseReference ref) {
                     toastMessage("Message posted");
+
                 }
             });
 
@@ -111,5 +131,21 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
         }
 
+    }
+
+    private void showData(DataSnapshot ds) {
+
+
+        for (DataSnapshot dats : ds.getChildren()) {
+            ChannelMessage msg = dats.getValue(ChannelMessage.class);
+            //toastMessage(msg.getMessage());
+            if(msg.getChannel().equals(this.getTag())) {
+                msgs.add(msg);
+            }
+            msgAdapter = new ChannelAdapter(getActivity(), msgs);
+
+            channelListView.setAdapter(msgAdapter);
+
+        }
     }
 }

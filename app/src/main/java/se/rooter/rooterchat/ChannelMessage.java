@@ -17,12 +17,24 @@ public class ChannelMessage {
         this.chatChannel = chatChannel;
     }
 
+    public void setSenderID(String senderID) {
+        this.senderID = senderID;
+    }
+
     public String getSenderID() {
         return this.senderID;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public String getMessage() {
         return this.message;
+    }
+
+    public void setChannel(String chatChannel) {
+        this.chatChannel = chatChannel;
     }
 
     public String getChannel() {

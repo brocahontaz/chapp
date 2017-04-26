@@ -2,6 +2,7 @@ package se.rooter.rooterchat;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -157,6 +158,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
                         }
                     });
+
                     toastMessage("Avatar updated");
                 }
             });

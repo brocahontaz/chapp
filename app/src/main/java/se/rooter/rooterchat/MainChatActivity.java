@@ -60,6 +60,8 @@ public class MainChatActivity extends AppCompatActivity
     private Fragment friendsFragment;
     private Fragment conversationsFragment;
 
+    public static ChappDatabaseHelper chappdb;
+
     public static Bitmap userImg;
 
     @Override
@@ -68,6 +70,8 @@ public class MainChatActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        chappdb = new ChappDatabaseHelper(this);
 
         settingsFragment = new SettingsFragment();
         homeFragment = new HomeFragment();
@@ -164,7 +168,6 @@ public class MainChatActivity extends AppCompatActivity
 
 
         //navpic.setImageBitmap(userImg);
-
     }
 
 

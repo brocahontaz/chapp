@@ -2,7 +2,12 @@ package se.rooter.rooterchat;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.database.sqlite.SQLiteException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -18,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +32,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -49,6 +59,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     private ArrayList<ChannelMessage> msgs;
     private ChannelAdapter msgAdapter;
 
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+
     private ListView channelListView;
 
     View myView;
@@ -60,6 +73,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
         rooterAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        storage = FirebaseStorage.getInstance();
 
         channelName = (TextView) myView.findViewById(R.id.channelName);
         channelName.setText("#" + this.getTag());

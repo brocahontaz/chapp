@@ -1,6 +1,9 @@
 package se.rooter.rooterchat;
 
 
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
 import java.nio.channels.Channel;
 
 public class ChannelMessage {
@@ -10,6 +13,7 @@ public class ChannelMessage {
     private String senderName;
     private String message;
     private String chatChannel;
+    private Bitmap img;
 
     public ChannelMessage() {
 
@@ -26,6 +30,14 @@ public class ChannelMessage {
         this.senderID = senderID;
         this.message = message;
         this.chatChannel = chatChannel;
+    }
+
+    public void setImg(Bitmap img) {
+        this.img = img;
+    }
+
+    public Bitmap getImg() {
+        return this.img;
     }
 
     public void setSenderName(String senderName) {

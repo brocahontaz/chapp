@@ -2,6 +2,7 @@ package se.rooter.rooterchat;
 
 
 import android.content.Context;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -51,7 +52,7 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        ChannelMessage channelMessage = getItem(position);
+        final ChannelMessage channelMessage = getItem(position);
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.channel_message_item, parent, false);
@@ -65,12 +66,46 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
         String thisUserId = channelMessage.getSenderID();
 
         storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference().child("img").child("avatars").child(thisUserId + "/pic");
+
+
+
+/*
+        try {
+                if(!MainChatActivity.chappdb.checkIfRecordExists(thisUserId)) {
+                    storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            MainChatActivity.chappdb.insertData(channelMessage.getSenderID(), img);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+
+                        }
+                    });
+
+                }
+
+            avatar.setImageBitmap(MainChatActivity.chappdb.getData(thisUserId));
+
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+ */
+        /*
+        if(MainChatActivity.chappdb.checkIfRecordExists(thisUserId)) {
+
+        }*/
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = new UserInformation();
 
         userName.setText(channelMessage.getSenderName());
         message.setText(channelMessage.getMessage());
+        //avatar.setImageBitmap(channelMessage.getImg());
 
 
         return convertView;

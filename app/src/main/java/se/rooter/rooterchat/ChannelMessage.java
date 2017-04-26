@@ -7,6 +7,7 @@ public class ChannelMessage {
 
     private String msgID;
     private String senderID;
+    private String senderName;
     private String message;
     private String chatChannel;
 
@@ -25,6 +26,14 @@ public class ChannelMessage {
         this.senderID = senderID;
         this.message = message;
         this.chatChannel = chatChannel;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderName() {
+        return this.senderName;
     }
 
     public void setMsgID(String msgID) {

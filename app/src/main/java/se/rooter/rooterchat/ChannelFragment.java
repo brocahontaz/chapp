@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference databaseReference;
 
     private static final String TAG = "ChannelFragment";
+
+    private String msgNick;
 
     private TextView channelName;
     private ImageView goBack;
@@ -108,6 +111,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
         String chatMessage = message.getText().toString().trim();
         ChannelMessage msg = new ChannelMessage(rooterAuth.getCurrentUser().getUid(), chatMessage, this.getTag());
+
         if(!chatMessage.equals("")) {
             DatabaseReference newRef = databaseReference.child("chatChannelMessages").push();
 
@@ -117,7 +121,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
                 }
             });
-
 
             /*
             newRef.setValue(msg, new DatabaseReference.CompletionListener() {
@@ -138,19 +141,41 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
     private void showData(DataSnapshot ds) {
 
-
         for (DataSnapshot dats : ds.getChildren()) {
-            ChannelMessage msg = dats.getValue(ChannelMessage.class);
+            final ChannelMessage msg = dats.getValue(ChannelMessage.class);
             msg.setMsgID(dats.getKey());
+
+            databaseReference.child("users").child(msg.getSenderID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String username = dataSnapshot.getValue(UserInformation.class).getNickname();
+                    //toastMessage(username);
+                    msg.setSenderName(username);
+                    try {
+                        if(getActivity() != null) {
+                            msgAdapter = new ChannelAdapter(getActivity(), msgs);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    channelListView.setAdapter(msgAdapter);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+
             //toastMessage(msg.getMessage());
             if(msg.getChannel().equals(this.getTag())) {
                 if(!msgs.contains(msg)) {
                     msgs.add(msg);
                 }
             }
-            msgAdapter = new ChannelAdapter(getActivity(), msgs);
 
-            channelListView.setAdapter(msgAdapter);
+
+
+            //channelListView.setAdapter(msgAdapter);
 
         }
     }

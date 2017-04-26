@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
+                channelListView.setAdapter(channelAdapter);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -128,8 +129,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             if(!channels.contains(chatInfo.getChannelName())) {
                 channels.add(chatInfo.getChannelName());
             }
-
-            channelAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, channels);
+            if (getActivity() != null) {
+                channelAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, channels);
+            }
 
             channelAdapter.sort(new Comparator<String>() {
                 @Override
@@ -138,7 +140,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
             });
 
-            channelListView.setAdapter(channelAdapter);
+
 
 
             //chatArrayAdapter = new ArrayAdapter<ChatInformation>(this, R.layout.channel_list_item, chatInfoList);

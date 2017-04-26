@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     private TextView channelName;
     private ImageView goBack;
 
+    private EditText message;
+    private ImageView postArrow;
+
     View myView;
 
     @Nullable
@@ -44,11 +48,21 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.channel_layout, container, false);
 
+        rooterAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         channelName = (TextView) myView.findViewById(R.id.channelName);
         channelName.setText("#" + this.getTag());
 
         goBack = (ImageView) myView.findViewById(R.id.backArrow);
         goBack.setOnClickListener(this);
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.hide();
+
+        message = (EditText) myView.findViewById(R.id.userMessage);
+        postArrow = (ImageView) myView.findViewById(R.id.postMessageArrow);
+        postArrow.setOnClickListener(this);
 
         return myView;
     }
@@ -63,6 +77,39 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         if (view == goBack) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).addToBackStack("HomeFragment").commit();
+        } else if (view == postArrow) {
+            postMessage();
         }
+    }
+
+    private void postMessage() {
+
+        String chatMessage = message.getText().toString().trim();
+        ChannelMessage msg = new ChannelMessage(rooterAuth.getCurrentUser().getUid(), chatMessage, this.getTag());
+        if(!chatMessage.equals("")) {
+            DatabaseReference newRef = databaseReference.child("chatChannelMessages").push();
+
+            newRef.setValue(msg, new DatabaseReference.CompletionListener() {
+                public void onComplete(DatabaseError dberror, DatabaseReference ref) {
+                    toastMessage("Message posted");
+                }
+            });
+
+
+            /*
+            newRef.setValue(msg, new DatabaseReference.CompletionListener() {
+                public void onComplete(DatabaseError dberror, DatabaseReference ref) {
+                    if(dberror == null) {
+                        toastMessage("Message posted");
+                    } else {
+                        toastMessage("Woops! Something went wrong");
+                    }
+                }
+            });*/
+        } else {
+            toastMessage("Woops! Can't post empty messages");
+
+        }
+
     }
 }

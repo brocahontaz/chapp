@@ -2,6 +2,7 @@ package se.rooter.rooterchat;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,9 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -102,7 +105,17 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-
+/*
+        message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null&& (actionId == message.IME_ACTION_DONE)) {
+                    InputMethodManager in = (InputMethodManager) myView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(message.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+                return false;
+            }
+        });
+*/
         return myView;
     }
 
@@ -118,6 +131,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).addToBackStack("HomeFragment").commit();
         } else if (view == postArrow) {
             postMessage();
+            InputMethodManager in = (InputMethodManager) myView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(message.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 
@@ -132,6 +147,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             newRef.setValue(msg, new DatabaseReference.CompletionListener() {
                 public void onComplete(DatabaseError dberror, DatabaseReference ref) {
                     toastMessage("Message posted");
+                    message.setText(null);
+                    message.clearFocus();
 
                 }
             });
@@ -163,8 +180,10 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     String username = dataSnapshot.getValue(UserInformation.class).getNickname();
+                    String imgPath = dataSnapshot.getValue(UserInformation.class).getImgPath();
                     //toastMessage(username);
                     msg.setSenderName(username);
+                    msg.setImgPath(imgPath);
                     try {
                         if(getActivity() != null) {
                             msgAdapter = new ChannelAdapter(getActivity(), msgs);

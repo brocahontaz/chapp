@@ -7,6 +7,7 @@ package se.rooter.rooterchat;
 public class UserInformation {
 
     public String nickname;
+    public String imgPath;
 
     public UserInformation() {
 
@@ -16,12 +17,25 @@ public class UserInformation {
         this.nickname = nickname;
     }
 
+    public UserInformation(String nickname, String imgPath) {
+        this.nickname = nickname;
+        this.imgPath = imgPath;
+    }
+
     public String getNickname() {
         return this.nickname;
     }
 
     public void setNickname(String nick) {
         this.nickname = nick;
+    }
+
+    public String getImgPath() {
+        return this.imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
 }

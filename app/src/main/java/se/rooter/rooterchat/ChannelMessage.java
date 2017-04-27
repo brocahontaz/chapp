@@ -13,6 +13,7 @@ public class ChannelMessage {
     private String senderName;
     private String message;
     private String chatChannel;
+    private String imgPath;
     private Bitmap img;
 
     public ChannelMessage() {
@@ -38,6 +39,14 @@ public class ChannelMessage {
 
     public Bitmap getImg() {
         return this.img;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public String getImgPath() {
+        return this.imgPath;
     }
 
     public void setSenderName(String senderName) {

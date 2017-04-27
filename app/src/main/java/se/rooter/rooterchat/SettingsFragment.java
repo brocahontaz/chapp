@@ -141,7 +141,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
                     storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
@@ -151,6 +151,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                             View hView = navigationView.getHeaderView(0);
                             ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
                             navpic.setImageBitmap(img);
+
+                            String imgpath = taskSnapshot.getDownloadUrl().toString();
+
+                            saveUserImgPath(imgpath);
+
+                            //UserInformation updateUser = new UserInformation(userID, imgpath);
+
+
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -190,6 +199,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         databaseReference.child("users").child(user.getUid()).setValue(userInfo);
 
         toastMessage("Nickname saved");
+
+    }
+
+    private void saveUserImgPath(String path) {
+
+        databaseReference.child("users").child(userID).child("imgPath").setValue(path);
 
     }
 

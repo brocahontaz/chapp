@@ -27,8 +27,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
 
@@ -42,6 +46,10 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private ArrayList<ImageView> imgs;
+    private Context context;
+    private final int radius = 5;
+    private final int margin = 5;
+    private final Transformation transformation = new RoundedCornersTransformation(radius, margin);
 
     public ChannelAdapter(Context context, ArrayList<ChannelMessage> messages) {
         super(context, 0, messages);
@@ -64,10 +72,32 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
         avatar = (ImageView) convertView.findViewById(R.id.userAvatar);
 
         String thisUserId = channelMessage.getSenderID();
+        String imgPath = channelMessage.getImgPath();
 
+/*
         storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReference().child("img").child("avatars").child(thisUserId + "/pic");
+        storageRef = storage.getReferenceFromUrl("gs://rooterchat.appspot.com/img/avatars/").child(thisUserId+"/pic");
+*/
 
+        Picasso.with(getContext()).load(imgPath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
+
+
+        //String url = storageRef.getDownloadUrl().getResult().toString();
+        //Picasso.with(context).load(url).resize(40, 40).placeholder(R.drawable.ic_action_name).into(avatar);
+
+
+
+        /*storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.with(getContext()).load(uri).into(avatar);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });*/
 
 
 /*

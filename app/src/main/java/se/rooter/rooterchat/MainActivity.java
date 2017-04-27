@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,11 +38,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private DatabaseReference dbref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbref = FirebaseDatabase.getInstance().getReference();
 
         rooterAuth = FirebaseAuth.getInstance();
 
@@ -137,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Successfully registered and logged in
                 if(task.isSuccessful()) {
                     toastMessage("Registered successfully");
-
+                    UserInformation userInfo = new UserInformation(rooterAuth.getCurrentUser().getEmail());
+                    dbref.child("users").child(rooterAuth.getCurrentUser().getUid()).setValue(userInfo);
                     finish();
                     //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 

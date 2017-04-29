@@ -95,7 +95,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
         channelListView = (ListView) myView.findViewById(R.id.channelListView);
         channelListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-        channelListView.setStackFromBottom(true);
+        //channelListView.setStackFromBottom(true);
 
         msgs = new ArrayList<ChannelMessage>();
 
@@ -136,10 +136,10 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         } else if (view == postArrow) {
             postMessage();
         } else if (view == message) {
-            /*
+
             if (!msgs.isEmpty()) {
                 channelListView.setSelection(msgAdapter.getCount() - 1);
-            }*/
+            }
         }
     }
 
@@ -203,7 +203,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
                     }
 
                     channelListView.setAdapter(msgAdapter);
-                    //channelListView.setSelection(msgAdapter.getCount() - 1);
+                    channelListView.setSelection(msgAdapter.getCount() - 1);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

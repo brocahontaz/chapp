@@ -287,7 +287,7 @@ public class MainChatActivity extends AppCompatActivity
             if(ds.child("users").child(userID).getValue(UserInformation.class) != null) {
                 uInfo.setNickname(ds.child("users").child(userID).getValue(UserInformation.class).getNickname());
                 uInfo.setImgPath(ds.child("users").child(userID).getValue(UserInformation.class).getImgPath());
-                Picasso.with(this).load(uInfo.getImgPath()).placeholder(R.drawable.ic_action_name).into(navpicRound);
+                Picasso.with(this).load(uInfo.getImgPath()).resize(50,50).placeholder(R.drawable.ic_action_name).into(navpicRound);
                 textViewName.setText(uInfo.getNickname());
             } else {
                 textViewName.setText("[nameless]");

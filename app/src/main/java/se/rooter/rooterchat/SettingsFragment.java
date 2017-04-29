@@ -261,7 +261,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 uInfo.setImgPath(ds.child("users").child(userID).getValue(UserInformation.class).getImgPath());
                 textViewUser.setText(uInfo.getNickname());
                 //Picasso.with(getActivity()).load(uInfo.getImgPath()).resize(120, 120).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
-                Picasso.with(getActivity()).load(uInfo.getImgPath()).placeholder(R.drawable.ic_action_name).into(circleAvatar);
+                Picasso.with(getActivity()).load(uInfo.getImgPath()).resize(120, 120).placeholder(R.drawable.ic_action_name).into(circleAvatar);
             } else {
                 textViewUser.setText(user.getEmail());
             }

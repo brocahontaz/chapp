@@ -82,7 +82,7 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
 */
 
         //Picasso.with(getContext()).load(imgPath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
-        Picasso.with(getContext()).load(imgPath).placeholder(R.drawable.ic_action_name).into(avatarRound);
+        Picasso.with(getContext()).load(imgPath).resize(50,50).placeholder(R.drawable.ic_action_name).into(avatarRound);
 
 
         //String url = storageRef.getDownloadUrl().getResult().toString();

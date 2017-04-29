@@ -134,7 +134,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         } else if (view == postArrow) {
             postMessage();
         } else if (view == message) {
-            channelListView.setSelection(msgAdapter.getCount() - 1);
+            if (!msgs.isEmpty()) {
+                channelListView.setSelection(msgAdapter.getCount() - 1);
+            }
         }
     }
 

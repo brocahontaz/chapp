@@ -8,6 +8,7 @@ public class UserInformation {
 
     public String nickname;
     public String imgPath;
+    public String email;
 
     public UserInformation() {
 
@@ -20,6 +21,14 @@ public class UserInformation {
     public UserInformation(String nickname, String imgPath) {
         this.nickname = nickname;
         this.imgPath = imgPath;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getNickname() {

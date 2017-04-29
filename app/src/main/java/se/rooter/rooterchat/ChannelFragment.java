@@ -1,5 +1,6 @@
 package se.rooter.rooterchat;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -51,6 +52,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "ChannelFragment";
 
     private String msgNick;
+    private String email;
 
     private TextView channelName;
     private ImageView goBack;
@@ -96,6 +98,32 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         channelListView = (ListView) myView.findViewById(R.id.channelListView);
         channelListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
         //channelListView.setStackFromBottom(true);
+
+        channelListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ChannelMessage data = (ChannelMessage) parent.getItemAtPosition(position);
+
+                DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
+                dbref.child("users").child(data.getSenderID()).addValueEventListener(new ValueEventListener() {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        email = dataSnapshot.getValue(UserInformation.class).getEmail();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("userMail", email);
+                        DialogFragment newFragment = new UserInfoDialog();
+                        newFragment.setArguments(bundle);
+                        newFragment.show(getFragmentManager(), email);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+
+
+                //toastMessage(data);
+                return true;
+            }
+        });
 
         msgs = new ArrayList<ChannelMessage>();
 

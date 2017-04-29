@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Successfully registered and logged in
                 if(task.isSuccessful()) {
                     UserInformation userInfo = new UserInformation(rooterAuth.getCurrentUser().getEmail());
+                    userInfo.setEmail(rooterAuth.getCurrentUser().getEmail());
                     dbref.child("users").child(rooterAuth.getCurrentUser().getUid()).setValue(userInfo);
                     rooterAuth.getCurrentUser().sendEmailVerification();
                     progressDialog.dismiss();

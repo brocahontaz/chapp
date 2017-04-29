@@ -20,6 +20,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
             android:layout_marginTop="0dp"
+            android:textColor="#000000"
             app:layout_constraintLeft_toRightOf="@+id/userAvatar"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/userNickname"
@@ -46,6 +47,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/userAvatar"
+            android:textColor="#000000"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/userAvatar"
             app:layout_constraintTop_toTopOf="parent"
@@ -57,12 +59,22 @@
             android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="?attr/colorPrimary"
             tools:layout_constraintBottom_creator="1"
             tools:layout_constraintLeft_creator="1" />
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            app:civ_border_color="#ffffff"
+            app:civ_border_width="0dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 </LinearLayout>

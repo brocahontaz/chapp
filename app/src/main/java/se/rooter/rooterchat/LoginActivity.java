@@ -1,5 +1,6 @@
 package se.rooter.rooterchat;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -54,12 +55,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
-                    toastMessage("Successfully signed in with " + user.getEmail());
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
 
+                    if(!rooterAuth.getCurrentUser().isEmailVerified()) {
+                        toastMessage("Please verify your account");
+                        rooterAuth.signOut();
+                        //finish();
+                       startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    } else {
+                        // User is signed in
+                        Log.d(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
+                        toastMessage("Successfully signed in with " + user.getEmail());
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
+                    }
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -137,6 +145,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (task.isSuccessful()) {
                     finish();
                     //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                } else {
+                    toastMessage("Failed to login. Please enter correct credentials");
                 }
             }
         });

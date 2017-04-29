@@ -36,6 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class MainChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -50,6 +54,8 @@ public class MainChatActivity extends AppCompatActivity
 
     private TextView textViewMail;
     private TextView textViewName;
+    private ImageView navpic;
+    private ImageView navpicRound;
 
     private DatabaseReference databaseReference;
     private FirebaseStorage storage;
@@ -59,6 +65,10 @@ public class MainChatActivity extends AppCompatActivity
     private Fragment homeFragment;
     private Fragment friendsFragment;
     private Fragment conversationsFragment;
+
+    private final int radius = 5;
+    private final int margin = 0;
+    private final Transformation transformation = new RoundedCornersTransformation(radius, margin);
 
     public static ChappDatabaseHelper chappdb;
 
@@ -71,7 +81,7 @@ public class MainChatActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        chappdb = new ChappDatabaseHelper(this);
+        //chappdb = new ChappDatabaseHelper(this);
 
         settingsFragment = new SettingsFragment();
         homeFragment = new HomeFragment();
@@ -146,12 +156,14 @@ public class MainChatActivity extends AppCompatActivity
         });
 
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference().child("img").child("avatars").child(user.getUid() + "/pic");
+        //storageReference = storage.getReference().child("img").child("avatars").child(user.getUid() + "/pic");
 
-        final Bitmap b= BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
+
+        //final Bitmap b= BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
         View hView = navigationView.getHeaderView(0);
-        final ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
-
+        navpic = (ImageView) hView.findViewById(R.id.userNavPic);
+        navpicRound = (ImageView) hView.findViewById(R.id.profile_image);
+        /*
         storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -165,7 +177,7 @@ public class MainChatActivity extends AppCompatActivity
                 navpic.setImageBitmap(userImg);
             }
         });
-
+        */
 
         //navpic.setImageBitmap(userImg);
     }
@@ -274,6 +286,8 @@ public class MainChatActivity extends AppCompatActivity
             UserInformation uInfo = new UserInformation();
             if(ds.child("users").child(userID).getValue(UserInformation.class) != null) {
                 uInfo.setNickname(ds.child("users").child(userID).getValue(UserInformation.class).getNickname());
+                uInfo.setImgPath(ds.child("users").child(userID).getValue(UserInformation.class).getImgPath());
+                Picasso.with(this).load(uInfo.getImgPath()).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(navpicRound);
                 textViewName.setText(uInfo.getNickname());
             } else {
                 textViewName.setText("[nameless]");

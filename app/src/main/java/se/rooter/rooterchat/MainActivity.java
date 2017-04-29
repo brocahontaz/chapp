@@ -62,10 +62,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
+
+                    if(!rooterAuth.getCurrentUser().isEmailVerified()) {
+                        //toastMessage("Please verify your account");
+                        //rooterAuth.signOut();
+                        //finish();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    } else {
+
+                        // User is signed in
+                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
+                    }
 
                 } else {
                     // User is signed out
@@ -142,10 +151,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<AuthResult> task) {
                 //Successfully registered and logged in
                 if(task.isSuccessful()) {
-                    toastMessage("Registered successfully");
                     UserInformation userInfo = new UserInformation(rooterAuth.getCurrentUser().getEmail());
                     dbref.child("users").child(rooterAuth.getCurrentUser().getUid()).setValue(userInfo);
-                    finish();
+                    rooterAuth.getCurrentUser().sendEmailVerification();
+                    progressDialog.dismiss();
+                    rooterAuth.signOut();
+                    toastMessage("Registered successfully. Please verify account via verification mail before logging in.");
+                    //finish();
+                    //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 
                     // Registering not working

@@ -42,6 +42,7 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
     private UserInformation user;
     private TextView userName;
     private ImageView avatar;
+    private ImageView avatarRound;
     private String nick = "";
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -70,6 +71,7 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
         TextView message = (TextView) convertView.findViewById(R.id.userMessage);
         ImageView userAvatar = (ImageView) convertView.findViewById(R.id.userAvatar);
         avatar = (ImageView) convertView.findViewById(R.id.userAvatar);
+        avatarRound = (ImageView) convertView.findViewById(R.id.profile_image);
 
         String thisUserId = channelMessage.getSenderID();
         String imgPath = channelMessage.getImgPath();
@@ -80,6 +82,7 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
 */
 
         Picasso.with(getContext()).load(imgPath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
+        Picasso.with(getContext()).load(imgPath).placeholder(R.drawable.ic_action_name).into(avatarRound);
 
 
         //String url = storageRef.getDownloadUrl().getResult().toString();

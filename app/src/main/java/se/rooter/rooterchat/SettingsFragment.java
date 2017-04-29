@@ -1,6 +1,7 @@
 package se.rooter.rooterchat;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +34,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -52,9 +58,20 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private String userID;
 
+    private ProgressBar progressBar;
+    private ProgressDialog progressDialog;
+
     ImageView avatar;
+    ImageView circleAvatar;
 
     NavigationView navigationView;
+
+    private final int radius = 5;
+    private final int margin = 0;
+    private final int radiusLarge = 60;
+    private final int marginLarge = 0;
+    private final Transformation transformation = new RoundedCornersTransformation(radius, margin);
+    private final Transformation transformationLarge = new RoundedCornersTransformation(radiusLarge, marginLarge);
 
     View myView;
 
@@ -77,12 +94,16 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         FirebaseUser user = rooterAuth.getCurrentUser();
         userID = user.getUid();
 
+        progressDialog = new ProgressDialog(getActivity());
+
         storageReference = storage.getReference().child("img").child("avatars").child(userID + "/pic");
 
         final Bitmap b=BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
 
         avatar = (ImageView) myView.findViewById(R.id.profileImage);
-        avatar.setImageBitmap(MainChatActivity.userImg);
+        circleAvatar = (ImageView) myView.findViewById(R.id.profile_image);
+        //avatar.setImageBitmap(MainChatActivity.userImg);
+
 /*
         storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -108,7 +129,18 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 imgintent.setAction(Intent.ACTION_GET_CONTENT);
 
                 startActivityForResult(Intent.createChooser(imgintent, "Select image"), 1);
+            }
+        });
 
+        circleAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent imgintent = new Intent();
+
+                imgintent.setType("image/*");
+                imgintent.setAction(Intent.ACTION_GET_CONTENT);
+
+                startActivityForResult(Intent.createChooser(imgintent, "Select image"), 1);
             }
         });
 
@@ -130,7 +162,14 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
+
         if(requestCode == 1 && resultCode == RESULT_OK && data != null) {
+
+            progressDialog.setMessage("Uploading avatar..");
+            progressDialog.show();
+
             Uri file = data.getData();
             UploadTask uploadTask = storageReference.putFile(file);
 
@@ -147,12 +186,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                         public void onSuccess(byte[] bytes) {
                             Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             MainChatActivity.userImg = img;
-                            avatar.setImageBitmap(img);
+
+                            //avatar.setImageBitmap(img);
                             View hView = navigationView.getHeaderView(0);
                             ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
-                            navpic.setImageBitmap(img);
+                            //navpic.setImageBitmap(img);
 
                             String imgpath = taskSnapshot.getDownloadUrl().toString();
+                            //Picasso.with(getActivity()).load(imgpath).resize(110, 110).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
+                            //Picasso.with(getActivity()).load(imgpath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(navpic);
 
                             saveUserImgPath(imgpath);
 
@@ -167,7 +209,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
                         }
                     });
-
+                    progressDialog.dismiss();
                     toastMessage("Avatar updated");
                 }
             });
@@ -196,7 +238,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         UserInformation userInfo = new UserInformation(nickname);
 
-        databaseReference.child("users").child(user.getUid()).setValue(userInfo);
+        databaseReference.child("users").child(user.getUid()).child("nickname").setValue(nickname);
 
         toastMessage("Nickname saved");
 
@@ -216,7 +258,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
             UserInformation uInfo = new UserInformation();
             if(ds.child("users").child(userID).getValue(UserInformation.class) != null) {
                 uInfo.setNickname(ds.child("users").child(userID).getValue(UserInformation.class).getNickname());
+                uInfo.setImgPath(ds.child("users").child(userID).getValue(UserInformation.class).getImgPath());
                 textViewUser.setText(uInfo.getNickname());
+                Picasso.with(getActivity()).load(uInfo.getImgPath()).resize(120, 120).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
+                Picasso.with(getActivity()).load(uInfo.getImgPath()).placeholder(R.drawable.ic_action_name).into(circleAvatar);
             } else {
                 textViewUser.setText(user.getEmail());
             }

@@ -2,11 +2,14 @@ package se.rooter.rooterchat;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -58,6 +61,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         channelListView = (ListView) myView.findViewById(R.id.channelListView);
         channelListView.setClickable(true);
 
+        editTextAddChannel.clearFocus();
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.hide();
+
         channelListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -69,7 +77,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
         chatInfoList = new ArrayList<ChatInformation>();
-        channels = new ArrayList<String>();
+        //channels = new ArrayList<String>();
 
         databaseReference.child("chatChannels").addValueEventListener(new ValueEventListener() {
             @Override
@@ -120,6 +128,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void showData(DataSnapshot ds) {
         FirebaseUser user = rooterAuth.getCurrentUser();
         String displayName;
+        channels = new ArrayList<String>();
 
         for (DataSnapshot dats : ds.getChildren()) {
             ChatInformation chatInfo = new ChatInformation();
@@ -131,17 +140,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
             if (getActivity() != null) {
                 channelAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, channels);
-            }
-
-            channelAdapter.sort(new Comparator<String>() {
-                @Override
-                public int compare(String lhs, String rhs) {
-                    return lhs.toLowerCase().compareTo(rhs.toLowerCase());
+                if(!channels.isEmpty()) {
+                    channelAdapter.sort(new Comparator<String>() {
+                        @Override
+                        public int compare(String lhs, String rhs) {
+                            return lhs.toLowerCase().compareTo(rhs.toLowerCase());
+                        }
+                    });
                 }
-            });
-
-
-
+            }
 
             //chatArrayAdapter = new ArrayAdapter<ChatInformation>(this, R.layout.channel_list_item, chatInfoList);
             //channelListView.setAdapter(chatArrayAdapter);

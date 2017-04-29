@@ -88,6 +88,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         fab.hide();
 
         message = (EditText) myView.findViewById(R.id.userMessage);
+        message.setOnClickListener(this);
+
         postArrow = (ImageView) myView.findViewById(R.id.postMessageArrow);
         postArrow.setOnClickListener(this);
 
@@ -131,8 +133,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).addToBackStack("HomeFragment").commit();
         } else if (view == postArrow) {
             postMessage();
-            InputMethodManager in = (InputMethodManager) myView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            in.hideSoftInputFromWindow(message.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } else if (view == message) {
+            channelListView.setSelection(msgAdapter.getCount() - 1);
         }
     }
 
@@ -146,9 +148,11 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
             newRef.setValue(msg, new DatabaseReference.CompletionListener() {
                 public void onComplete(DatabaseError dberror, DatabaseReference ref) {
-                    toastMessage("Message posted");
+                    InputMethodManager in = (InputMethodManager) myView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(message.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     message.setText(null);
                     message.clearFocus();
+                    toastMessage("Message posted");
 
                 }
             });

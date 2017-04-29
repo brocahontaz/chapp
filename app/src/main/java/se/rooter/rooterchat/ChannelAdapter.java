@@ -81,7 +81,7 @@ public class ChannelAdapter extends ArrayAdapter<ChannelMessage> {
         storageRef = storage.getReferenceFromUrl("gs://rooterchat.appspot.com/img/avatars/").child(thisUserId+"/pic");
 */
 
-        Picasso.with(getContext()).load(imgPath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
+        //Picasso.with(getContext()).load(imgPath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
         Picasso.with(getContext()).load(imgPath).placeholder(R.drawable.ic_action_name).into(avatarRound);
 
 

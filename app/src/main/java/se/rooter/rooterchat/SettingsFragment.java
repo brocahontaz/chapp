@@ -184,12 +184,12 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
-                            Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            MainChatActivity.userImg = img;
+                            //Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            //MainChatActivity.userImg = img;
 
                             //avatar.setImageBitmap(img);
-                            View hView = navigationView.getHeaderView(0);
-                            ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
+                            //View hView = navigationView.getHeaderView(0);
+                            //ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
                             //navpic.setImageBitmap(img);
 
                             String imgpath = taskSnapshot.getDownloadUrl().toString();
@@ -260,7 +260,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 uInfo.setNickname(ds.child("users").child(userID).getValue(UserInformation.class).getNickname());
                 uInfo.setImgPath(ds.child("users").child(userID).getValue(UserInformation.class).getImgPath());
                 textViewUser.setText(uInfo.getNickname());
-                Picasso.with(getActivity()).load(uInfo.getImgPath()).resize(120, 120).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
+                //Picasso.with(getActivity()).load(uInfo.getImgPath()).resize(120, 120).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
                 Picasso.with(getActivity()).load(uInfo.getImgPath()).placeholder(R.drawable.ic_action_name).into(circleAvatar);
             } else {
                 textViewUser.setText(user.getEmail());

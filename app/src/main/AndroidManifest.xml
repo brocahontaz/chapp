@@ -37,8 +37,7 @@
         <activity
             android:name=".MainChatActivity"
             android:label="@string/title_activity_main_chat"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChatFragment"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
     <service

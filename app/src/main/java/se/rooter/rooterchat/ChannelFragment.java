@@ -94,6 +94,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         postArrow.setOnClickListener(this);
 
         channelListView = (ListView) myView.findViewById(R.id.channelListView);
+        channelListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
+        channelListView.setStackFromBottom(true);
 
         msgs = new ArrayList<ChannelMessage>();
 
@@ -134,9 +136,10 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         } else if (view == postArrow) {
             postMessage();
         } else if (view == message) {
+            /*
             if (!msgs.isEmpty()) {
                 channelListView.setSelection(msgAdapter.getCount() - 1);
-            }
+            }*/
         }
     }
 
@@ -181,7 +184,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         for (DataSnapshot dats : ds.getChildren()) {
             final ChannelMessage msg = dats.getValue(ChannelMessage.class);
             msg.setMsgID(dats.getKey());
-
+            if(msg.getChannel().equals(this.getTag())) {
             databaseReference.child("users").child(msg.getSenderID()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -200,7 +203,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
                     }
 
                     channelListView.setAdapter(msgAdapter);
-                    channelListView.setSelection(msgAdapter.getCount() - 1);
+                    //channelListView.setSelection(msgAdapter.getCount() - 1);
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -208,7 +211,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             });
 
             //toastMessage(msg.getMessage());
-            if(msg.getChannel().equals(this.getTag())) {
+            //if(msg.getChannel().equals(this.getTag())) {
                 if(!msgs.contains(msg)) {
                     msgs.add(msg);
                 }

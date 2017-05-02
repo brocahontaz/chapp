@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import static android.R.layout.simple_list_item_1;
 
@@ -43,10 +46,13 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
     private ListView friendsList;
     private EditText addFriend;
     private ImageButton addFriendButton;
+    private ImageView removeFriend;
 
     private ArrayList<String> friends;
     private ArrayList<UserInformation> friendsUsers;
     private ArrayAdapter<UserInformation> arrayAdapter;
+    private HashSet<String> friendSet;
+    private HashMap<String, Object> friendMap;
 
     private FriendAdapter friendAdapter;
 
@@ -79,7 +85,28 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
 
         DatabaseReference newref = databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid());
 
-        newref.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference newref2 = databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid()).child("contacts");
+
+        newref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String key = ds.getKey();
+                    Log.d("test", key);
+                }
+                
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        /*newref.addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 UserInformation uinfo = dataSnapshot.getValue(UserInformation.class);
 
@@ -127,7 +154,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-        });
+        });*/
 
         return myView;
     }
@@ -160,13 +187,29 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 me = dataSnapshot.getValue(UserInformation.class);
-                                ArrayList<String> contacts = me.getContacts();
-                                if(contacts == null) {
-                                    contacts = new ArrayList<String>();
+                                HashMap<String, Object> contactsMap = me.getContacts();
+
+                                if (contactsMap == null) {
+                                    contactsMap = new HashMap<String, Object>();
                                 }
 
+                                contactsMap.put(friendID, true);
+                                dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").updateChildren(contactsMap);
+
+                                /*ArrayList<String> contacts = me.getContacts();
+                                if(contacts == null) {
+                                    contacts = new ArrayList<String>();
+                                }*/
+
+                                /*
                                 if(!contacts.contains(friendID)) {
                                     contacts.add(friendID);
+                                    friendMap = new HashMap<String, Object>();
+                                    friendMap.put(friendID, true);
+                                    dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").updateChildren(friendMap);
+*/
+                                    /*
+
                                     dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").setValue(contacts, new DatabaseReference.CompletionListener() {
                                         public void onComplete(DatabaseError dberror, DatabaseReference ref) {
                                             added = true;
@@ -174,11 +217,13 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                                         }
                                     });
 
+                                    */
+/*
                                 } else {
                                     friendAlreadyExists = true;
                                     //toastMessage("Cannot add friends already in your list. ");
                                 }
-
+*/
                             }
 
                             @Override

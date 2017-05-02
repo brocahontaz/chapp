@@ -11,6 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +26,9 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
     private TextView userName;
     private TextView userMail;
     private ImageView avatarRound;
+    private ImageView removeFriend;
+    private DatabaseReference databaseReference;
+    private FirebaseAuth rooterAuth;
 
     public FriendAdapter(Context context, ArrayList<UserInformation> friends) {
         super(context, 0, friends);
@@ -38,6 +47,14 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
 
         userMail = (TextView) convertView.findViewById(R.id.userMail);
         avatarRound = (ImageView) convertView.findViewById(R.id.profile_image);
+        removeFriend = (ImageView) convertView.findViewById(R.id.removeFriend);
+
+        removeFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         String imgpath = user.getImgPath();
         String username = user.getNickname();

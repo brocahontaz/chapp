@@ -15,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserInfoDialog extends DialogFragment {
 
@@ -22,6 +23,7 @@ public class UserInfoDialog extends DialogFragment {
     private String email;
     private AlertDialog.Builder builder;
     private ArrayList<String> contacts;
+    private HashMap<String, Object> contactsMap;
     private String userID;
 
     @Override
@@ -37,7 +39,13 @@ public class UserInfoDialog extends DialogFragment {
 
         dbref.addValueEventListener(new ValueEventListener() {
             public void onDataChange(DataSnapshot dataSnapshot) {
-                contacts = dataSnapshot.getValue(UserInformation.class).getContacts();
+                //contacts = dataSnapshot.getValue(UserInformation.class).getContacts();
+                contactsMap = dataSnapshot.getValue(UserInformation.class).getContacts();
+
+                if (contactsMap == null) {
+                    contactsMap = new HashMap<String, Object>();
+                }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -47,6 +55,11 @@ public class UserInfoDialog extends DialogFragment {
         builder.setMessage("Add " + userMail + " as a friend?")
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
+                        contactsMap.put(userID, true);
+                        dbref.child("contacts").updateChildren(contactsMap);
+
+                        /*
                         if(contacts == null) {
                             contacts = new ArrayList<String>();
                         }
@@ -58,6 +71,7 @@ public class UserInfoDialog extends DialogFragment {
                         }
 
                         dbref.child("contacts").setValue(contacts);
+                        */
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {

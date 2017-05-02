@@ -1,6 +1,10 @@
 package se.rooter.rooterchat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Rooter on 2017-05-02.
@@ -8,17 +12,21 @@ import java.util.ArrayList;
 
 public class UserContacts {
 
-    private ArrayList<String> contacts;
+    private HashMap<String, Object> contacts;
 
     public UserContacts() {
-        this.contacts = new ArrayList<String>();
+        this.contacts = new HashMap<String, Object>();
     }
 
-    public void addContact(String id) {
-        this.contacts.add(id);
+    public void setContact(String id) {
+        this.contacts.put(id, true);
     }
 
-    public ArrayList<String> getContacts() {
+    public HashMap<String, Object> getContacts() {
         return this.contacts;
+    }
+
+    public void setContacts(HashMap<String, Object> contacts) {
+        this.contacts = contacts;
     }
 }

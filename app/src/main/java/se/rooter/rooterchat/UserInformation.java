@@ -3,6 +3,7 @@ package se.rooter.rooterchat;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Johan Andersson on 2017-04-09.
@@ -14,6 +15,7 @@ public class UserInformation implements Comparable<UserInformation> {
     public String imgPath;
     public String email;
     public ArrayList<String> contacts;
+    public HashMap<String, Object> contactsMap;
 
     public UserInformation() {
 
@@ -28,12 +30,12 @@ public class UserInformation implements Comparable<UserInformation> {
         this.imgPath = imgPath;
     }
 
-    public ArrayList<String> getContacts() {
-        return this.contacts;
+    public HashMap<String, Object> getContacts() {
+        return this.contactsMap;
     }
 
-    public void setContacts(ArrayList<String> contacts) {
-        this.contacts = contacts;
+    public void setContacts(HashMap<String, Object> contactsMap) {
+        this.contactsMap = contactsMap;
     }
 
     public String getEmail() {

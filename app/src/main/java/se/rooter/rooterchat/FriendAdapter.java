@@ -42,8 +42,6 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
         String imgpath = user.getImgPath();
         String username = user.getNickname();
 
-        Log.d("name", username);
-
         String email = user.getEmail();
 
         Picasso.with(getContext()).load(imgpath).resize(40,40).placeholder(R.drawable.ic_action_name).into(avatarRound);

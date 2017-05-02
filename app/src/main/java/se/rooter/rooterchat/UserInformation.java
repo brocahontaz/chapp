@@ -1,12 +1,14 @@
 package se.rooter.rooterchat;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
 /**
  * Created by Johan Andersson on 2017-04-09.
  */
 
-public class UserInformation {
+public class UserInformation implements Comparable<UserInformation> {
 
     public String nickname;
     public String imgPath;
@@ -58,4 +60,30 @@ public class UserInformation {
         this.imgPath = imgPath;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+
+        if(obj == this) {
+            return true;
+        }
+        if(!(obj instanceof UserInformation)) {
+            return false;
+        }
+
+        UserInformation ui = (UserInformation) obj;
+
+        return this.email.equals(ui.email);
+
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.email.hashCode();
+    }
+
+    @Override
+    public int compareTo(@NonNull UserInformation o) {
+        return this.nickname.toLowerCase().compareTo(o.nickname.toLowerCase());
+    }
 }

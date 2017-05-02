@@ -2,12 +2,15 @@ package se.rooter.rooterchat;
 
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -35,6 +38,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
 
     private FirebaseAuth rooterAuth;
     private DatabaseReference databaseReference;
+    DatabaseReference dbref;
 
     private ListView friendsList;
     private EditText addFriend;
@@ -49,6 +53,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
     private UserInformation me;
 
     private boolean added;
+    private boolean friendAlreadyExists;
 
     View myView;
 
@@ -64,6 +69,8 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
 
         addFriendButton.setOnClickListener(this);
 
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         friendsUsers = new ArrayList<UserInformation>();
 
@@ -136,16 +143,16 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         added = false;
         final String friendMail = addFriend.getText().toString().trim();
 
-        final DatabaseReference dbref = FirebaseDatabase.getInstance().getReference().child("users");
+        dbref = FirebaseDatabase.getInstance().getReference().child("users");
 
-        dbref.addValueEventListener(new ValueEventListener() {
+        dbref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     UserInformation ui = ds.getValue(UserInformation.class);
                     String mail = ds.getValue(UserInformation.class).getEmail();
-                    final String id = ds.getKey();
+                    final String friendID = ds.getKey();
 
                     if(ui.getEmail().equals(friendMail)) {
 
@@ -158,21 +165,25 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                                     contacts = new ArrayList<String>();
                                 }
 
-                                if(!contacts.contains(id)) {
-                                    contacts.add(id);
-                                    dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").setValue(contacts);
-                                    added = true;
-                                    toastMessage("Friend added, woo!");
+                                if(!contacts.contains(friendID)) {
+                                    contacts.add(friendID);
+                                    dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").setValue(contacts, new DatabaseReference.CompletionListener() {
+                                        public void onComplete(DatabaseError dberror, DatabaseReference ref) {
+                                            added = true;
+                                            toastMessage("Friend added, woo!");
+                                        }
+                                    });
+
                                 } else {
-                                    added = true;
-                                    toastMessage("Cannot add friends already in your list. ");
+                                    friendAlreadyExists = true;
+                                    //toastMessage("Cannot add friends already in your list. ");
                                 }
 
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                toastMessage("Couldn't add friend. Be sure to provide a valid email.");
+                                //toastMessage("Couldn't add friend. Be sure to provide a valid email.");
                             }
                         });
 
@@ -183,17 +194,35 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                toastMessage("Couldn't add friend. Be sure to provide a valid email.");
+                //toastMessage("Couldn't add friend. Be sure to provide a valid email.");
             }
 
         });
 
-        if (added == false) {
-            toastMessage("Couldn't add friend. Be sure to provide a valid email.");
+        if(!added) {
+            //toastMessageLong("Woops! Contact couldn't be added. Please provide a valid mail.");
         }
+
+        if (friendAlreadyExists) {
+            toastMessage("Woops! Contact already in list.");
+        }
+
+
+        InputMethodManager in = (InputMethodManager) myView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(addFriend.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        addFriend.setText(null);
+        addFriend.clearFocus();
     }
 
     private void toastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        if(getActivity() != null) {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void toastMessageLong(String message) {
+        if(getActivity() != null) {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        }
     }
 }

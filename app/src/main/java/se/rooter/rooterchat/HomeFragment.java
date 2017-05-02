@@ -89,7 +89,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
-                channelListView.setAdapter(channelAdapter);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -97,6 +96,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
 
 
+        channels = new ArrayList<String>();
 
         return myView;
     }
@@ -134,7 +134,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void showData(DataSnapshot ds) {
         FirebaseUser user = rooterAuth.getCurrentUser();
         String displayName;
-        channels = new ArrayList<String>();
 
         for (DataSnapshot dats : ds.getChildren()) {
             ChatInformation chatInfo = new ChatInformation();
@@ -155,6 +154,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     });
                 }
             }
+            channelListView.setAdapter(channelAdapter);
 
             //chatArrayAdapter = new ArrayAdapter<ChatInformation>(this, R.layout.channel_list_item, chatInfoList);
             //channelListView.setAdapter(chatArrayAdapter);

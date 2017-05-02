@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -89,6 +90,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.hide();
 
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
         message = (EditText) myView.findViewById(R.id.userMessage);
         message.setOnClickListener(this);
 
@@ -105,7 +109,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
                 ChannelMessage data = (ChannelMessage) parent.getItemAtPosition(position);
                 final String uid = data.getSenderID();
                 DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
-                dbref.child("users").child(data.getSenderID()).addValueEventListener(new ValueEventListener() {
+                dbref.child("users").child(data.getSenderID()).addListenerForSingleValueEvent(new ValueEventListener() {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         email = dataSnapshot.getValue(UserInformation.class).getEmail();
                         Bundle bundle = new Bundle();

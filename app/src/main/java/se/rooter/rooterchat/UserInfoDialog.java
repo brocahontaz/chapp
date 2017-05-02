@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +52,9 @@ public class UserInfoDialog extends DialogFragment {
                         }
                         if(!contacts.contains(userID)) {
                             contacts.add(userID);
+                            toastMessage("Added contact, woo!");
+                        } else {
+                            toastMessage("Woops! Contact is already in friendslist.");
                         }
 
                         dbref.child("contacts").setValue(contacts);
@@ -68,6 +72,10 @@ public class UserInfoDialog extends DialogFragment {
 
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
 }

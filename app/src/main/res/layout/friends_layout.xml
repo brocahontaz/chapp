@@ -51,7 +51,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="0dp"
             android:ems="10"
-            android:hint="@string/add_channel"
+            android:hint="Add friend"
             android:inputType="textPersonName"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"

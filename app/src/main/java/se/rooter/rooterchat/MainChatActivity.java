@@ -52,6 +52,8 @@ public class MainChatActivity extends AppCompatActivity
     private FirebaseUser user;
     private String userID;
 
+    private TextView footerLink;
+
     private TextView textViewMail;
     private TextView textViewName;
     private ImageView navpic;
@@ -133,6 +135,17 @@ public class MainChatActivity extends AppCompatActivity
 
         user = rooterAuth.getCurrentUser();
         userID = user.getUid();
+
+        footerLink = (TextView) navigationView.findViewById(R.id.footer_item_1);
+
+        footerLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         textViewMail = (TextView) header.findViewById(R.id.textViewNavMail);
         textViewName = (TextView) header.findViewById(R.id.navNick);

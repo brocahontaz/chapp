@@ -13,23 +13,47 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class UserInfoDialog extends DialogFragment {
 
     private DatabaseReference dbref;
     private String email;
     private AlertDialog.Builder builder;
+    private ArrayList<String> contacts;
+    private String userID;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         builder = new AlertDialog.Builder(getActivity());
         Bundle bundle = getArguments();
+        userID = bundle.getString("userID");
         String userMail = bundle.getString("userMail");
+        String thisUserId = bundle.getString("thisUserId");
+        dbref = FirebaseDatabase.getInstance().getReference().child("users").child(thisUserId);
 
-        builder.setMessage(userMail)
+
+        dbref.addValueEventListener(new ValueEventListener() {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                contacts = dataSnapshot.getValue(UserInformation.class).getContacts();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        builder.setMessage("Add " + userMail + " as a friend?")
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        if(contacts == null) {
+                            contacts = new ArrayList<String>();
+                        }
+                        if(!contacts.contains(userID)) {
+                            contacts.add(userID);
+                        }
 
+                        dbref.child("contacts").setValue(contacts);
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {

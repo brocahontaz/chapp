@@ -20,6 +20,7 @@
         android:id="@+id/nav_manage"
         android:title="@string/nav_manage">
         <menu>
+            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_settings"
                 android:icon="@drawable/ic_settings"
@@ -28,6 +29,7 @@
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_power"
                 android:title="@string/nav_logout" />
+            </group>
         </menu>
     </item>
 

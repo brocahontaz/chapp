@@ -1,5 +1,7 @@
 package se.rooter.rooterchat;
 
+import java.util.ArrayList;
+
 /**
  * Created by Johan Andersson on 2017-04-09.
  */
@@ -9,6 +11,7 @@ public class UserInformation {
     public String nickname;
     public String imgPath;
     public String email;
+    public ArrayList<String> contacts;
 
     public UserInformation() {
 
@@ -21,6 +24,14 @@ public class UserInformation {
     public UserInformation(String nickname, String imgPath) {
         this.nickname = nickname;
         this.imgPath = imgPath;
+    }
+
+    public ArrayList<String> getContacts() {
+        return this.contacts;
+    }
+
+    public void setContacts(ArrayList<String> contacts) {
+        this.contacts = contacts;
     }
 
     public String getEmail() {

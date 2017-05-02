@@ -103,13 +103,15 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 ChannelMessage data = (ChannelMessage) parent.getItemAtPosition(position);
-
+                final String uid = data.getSenderID();
                 DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
                 dbref.child("users").child(data.getSenderID()).addValueEventListener(new ValueEventListener() {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         email = dataSnapshot.getValue(UserInformation.class).getEmail();
                         Bundle bundle = new Bundle();
+                        bundle.putString("userID", uid);
                         bundle.putString("userMail", email);
+                        bundle.putString("thisUserId", rooterAuth.getCurrentUser().getUid());
                         DialogFragment newFragment = new UserInfoDialog();
                         newFragment.setArguments(bundle);
                         newFragment.show(getFragmentManager(), email);

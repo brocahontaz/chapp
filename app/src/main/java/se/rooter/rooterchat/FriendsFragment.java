@@ -93,10 +93,45 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String key = ds.getKey();
-                    Log.d("test", key);
+                    final String key = ds.getKey();
+
+                    databaseReference.child("users").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            UserInformation userInfo = new UserInformation();
+                            userInfo.setNickname(dataSnapshot.getValue(UserInformation.class).getNickname());
+                            userInfo.setEmail(dataSnapshot.getValue(UserInformation.class).getEmail());
+                            userInfo.setImgPath(dataSnapshot.getValue(UserInformation.class).getImgPath());
+                            userInfo.setId(key);
+
+                            if(!friendsUsers.contains(userInfo)) {
+                                friendsUsers.add(userInfo);
+                            }
+
+                            try {
+                                if (getActivity() != null) {
+                                    friendAdapter = new FriendAdapter(getActivity(), friendsUsers);
+                                    if(!friendsUsers.isEmpty()) {
+                                        Collections.sort(friendsUsers, new UserComparator());
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            friendsList.setAdapter(friendAdapter);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                 }
-                
+
             }
 
             @Override
@@ -193,8 +228,17 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                                     contactsMap = new HashMap<String, Object>();
                                 }
 
-                                contactsMap.put(friendID, true);
-                                dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").updateChildren(contactsMap);
+                                if (!contactsMap.containsKey(friendID)) {
+                                    contactsMap.put(friendID, true);
+                                    dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").updateChildren(contactsMap, new DatabaseReference.CompletionListener() {
+                                        @Override
+                                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                            toastMessage("Woo! Contact added :D");
+                                        }
+                                    });
+                                } else {
+                                    toastMessage("Woops! Contact is already in your list :)");
+                                }
 
                                 /*ArrayList<String> contacts = me.getContacts();
                                 if(contacts == null) {

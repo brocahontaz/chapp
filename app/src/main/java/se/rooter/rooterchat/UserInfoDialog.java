@@ -56,8 +56,18 @@ public class UserInfoDialog extends DialogFragment {
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        contactsMap.put(userID, true);
-                        dbref.child("contacts").updateChildren(contactsMap);
+                        if(!contactsMap.containsKey(userID)) {
+                            contactsMap.put(userID, true);
+                            dbref.child("contacts").updateChildren(contactsMap, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                                }
+                            });
+                            toastMessage("Woo! Contact added :D");
+                        } else {
+                            toastMessage("Woops! Contact is already in your list :)");
+                        }
 
                         /*
                         if(contacts == null) {
@@ -89,7 +99,9 @@ public class UserInfoDialog extends DialogFragment {
     }
 
     private void toastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        if(getActivity() != null) {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

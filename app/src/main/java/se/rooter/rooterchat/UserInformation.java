@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 public class UserInformation implements Comparable<UserInformation> {
 
+    private String id;
     public String nickname;
     public String imgPath;
     public String email;
@@ -28,6 +29,14 @@ public class UserInformation implements Comparable<UserInformation> {
     public UserInformation(String nickname, String imgPath) {
         this.nickname = nickname;
         this.imgPath = imgPath;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public HashMap<String, Object> getContacts() {

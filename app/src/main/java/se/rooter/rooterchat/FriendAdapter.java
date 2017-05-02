@@ -38,6 +38,7 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         final UserInformation user = getItem(position);
+        final int pos2 = position;
 
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.friend_list_item, parent, false);
@@ -49,10 +50,17 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
         avatarRound = (ImageView) convertView.findViewById(R.id.profile_image);
         removeFriend = (ImageView) convertView.findViewById(R.id.removeFriend);
 
+        final String id = user.getId();
+
         removeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                rooterAuth = FirebaseAuth.getInstance();
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(rooterAuth.getCurrentUser().getUid()).child("contacts").child(id);
 
+                databaseReference.removeValue();
+                FriendAdapter.this.remove(FriendAdapter.this.getItem(pos2));
+                notifyDataSetChanged();
             }
         });
 

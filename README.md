@@ -2,4 +2,6 @@
 A completely free chat application for Android
 ![alt text][channelview]
 
-[channelview]: http://chapp.rooter.se/img/chappchannelview.png =100x "View of a chat channel"
+<img src="http://chapp.rooter.se/img/chappchannelview.png" width="100">
+
+[channelview]: http://chapp.rooter.se/img/chappchannelview.png "View of a chat channel"

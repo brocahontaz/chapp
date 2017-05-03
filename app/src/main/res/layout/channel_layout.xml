@@ -15,7 +15,7 @@
         android:dividerHeight="0dp"
         android:paddingBottom="10dp"
         android:text="@string/hello_world"
-        android:layout_below="@+id/addFriend"
+        android:layout_below="@+id/newConvo"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/channelWrite"
         android:background="@drawable/border_top_bottom"/>
@@ -76,7 +76,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/addFriend"
+        android:id="@+id/newConvo"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"

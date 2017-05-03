@@ -2,7 +2,6 @@ package se.rooter.rooterchat;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -55,8 +53,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rooterAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        editTextAddChannel = (EditText) myView.findViewById(R.id.addFriend).findViewById(R.id.editTextAddChannel);
-        buttonAddChannel = (ImageButton) myView.findViewById(R.id.addFriend).findViewById(R.id.imageButtonAddFriend);
+        editTextAddChannel = (EditText) myView.findViewById(R.id.newConvo).findViewById(R.id.editTextAddChannel);
+        buttonAddChannel = (ImageButton) myView.findViewById(R.id.newConvo).findViewById(R.id.imgBtnStartNew);
         buttonAddChannel.setOnClickListener(this);
 
         channelListView = (ListView) myView.findViewById(R.id.channelListView);

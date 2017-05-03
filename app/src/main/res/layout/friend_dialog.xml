@@ -67,6 +67,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:text="Send a new message"
+            android:textColor="#000000"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/messageBtn"
             app:layout_constraintLeft_toRightOf="@+id/messageBtn"

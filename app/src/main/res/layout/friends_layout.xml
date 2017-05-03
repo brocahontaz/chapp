@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/addFriend"
+        android:layout_below="@+id/newConvo"
         android:background="@drawable/border_top"
         android:divider="@null"
         android:dividerHeight="0dp"
@@ -20,7 +20,7 @@
         android:text="@string/hello_world" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/addFriend"
+        android:id="@+id/newConvo"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
@@ -28,7 +28,7 @@
         android:background="#ffffff">
 
         <ImageButton
-            android:id="@+id/imageButtonAddFriend"
+            android:id="@+id/imgBtnStartNew"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="8dp"
@@ -52,12 +52,12 @@
             android:layout_marginTop="0dp"
             android:ems="10"
             android:hint="Add friend"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/imageButtonAddFriend"
+            app:layout_constraintRight_toLeftOf="@+id/imgBtnStartNew"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             tools:layout_constraintLeft_creator="1" />

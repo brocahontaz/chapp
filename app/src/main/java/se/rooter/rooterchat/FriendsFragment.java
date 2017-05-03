@@ -1,11 +1,9 @@
 package se.rooter.rooterchat;
 
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,11 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import static android.R.layout.simple_list_item_1;
 
 /**
  * Created by Rooter on 2017-04-17.
@@ -72,7 +67,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         friendsList = (ListView) myView.findViewById(R.id.friendsList);
 
         addFriend = (EditText) myView.findViewById(R.id.editTextAddFriend);
-        addFriendButton = (ImageButton) myView.findViewById(R.id.imageButtonAddFriend);
+        addFriendButton = (ImageButton) myView.findViewById(R.id.imgBtnStartNew);
 
         addFriendButton.setOnClickListener(this);
 

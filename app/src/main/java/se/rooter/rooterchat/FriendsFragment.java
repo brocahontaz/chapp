@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -82,6 +83,21 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
 
         rooterAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                UserInformation data = (UserInformation) parent.getItemAtPosition(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", data.getId());
+                bundle.putString("name", data.getNickname());
+                bundle.putInt("position", position);
+                FriendInfoDialog newFragment = new FriendInfoDialog();
+                newFragment.setArguments(bundle);
+                newFragment.setAdapter(friendAdapter);
+                newFragment.show(getFragmentManager(), data.getId());
+            }
+        });
 
         DatabaseReference newref = databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid());
 

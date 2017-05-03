@@ -49,9 +49,11 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
         userMail = (TextView) convertView.findViewById(R.id.userMail);
         avatarRound = (ImageView) convertView.findViewById(R.id.profile_image);
         removeFriend = (ImageView) convertView.findViewById(R.id.removeFriend);
+        removeFriend.setVisibility(View.GONE);
 
         final String id = user.getId();
 
+        /*
         removeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +65,7 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
                 notifyDataSetChanged();
             }
         });
+        */
 
         String imgpath = user.getImgPath();
         String username = user.getNickname();

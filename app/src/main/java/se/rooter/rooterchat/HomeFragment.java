@@ -53,8 +53,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         rooterAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        editTextAddChannel = (EditText) myView.findViewById(R.id.newConvo).findViewById(R.id.editTextAddChannel);
-        buttonAddChannel = (ImageButton) myView.findViewById(R.id.newConvo).findViewById(R.id.imgBtnStartNew);
+        editTextAddChannel = (EditText) myView.findViewById(R.id.convoInfo).findViewById(R.id.editTextAddChannel);
+        buttonAddChannel = (ImageButton) myView.findViewById(R.id.convoInfo).findViewById(R.id.imgBtnStartNew);
         buttonAddChannel.setOnClickListener(this);
 
         channelListView = (ListView) myView.findViewById(R.id.channelListView);

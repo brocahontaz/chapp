@@ -11,9 +11,9 @@
         android:id="@+id/msgListView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/channelWrite"
+        android:layout_above="@+id/writeMsg"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/newConvo"
+        android:layout_below="@+id/convoInfo"
         android:background="@drawable/border_top_bottom"
         android:divider="@null"
         android:dividerHeight="0dp"
@@ -21,7 +21,7 @@
         android:text="@string/hello_world" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/channelWrite"
+        android:id="@+id/writeMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -76,7 +76,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/newConvo"
+        android:id="@+id/convoInfo"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentStart="true"
@@ -84,18 +84,18 @@
         android:background="#ffffff">
 
         <TextView
-            android:id="@+id/channelName"
+            android:id="@+id/receiverName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/backArrow"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Channel name"
-            android:layout_marginStart="16dp" />
+            tools:text="Receiver" />
 
         <ImageView
             android:id="@+id/backArrow"

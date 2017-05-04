@@ -17,6 +17,7 @@ public class UserInformation implements Comparable<UserInformation> {
     public String email;
     public ArrayList<String> contacts;
     public HashMap<String, Object> contactsMap;
+    public HashMap<String, Object> conversationsMap;
 
     public UserInformation() {
 
@@ -37,6 +38,14 @@ public class UserInformation implements Comparable<UserInformation> {
 
     public String getId() {
         return this.id;
+    }
+
+    public HashMap<String, Object> getConversations() {
+        return this.conversationsMap;
+    }
+
+    public void setConversations(HashMap<String, Object> conversationsMap) {
+        this.conversationsMap = conversationsMap;
     }
 
     public HashMap<String, Object> getContacts() {

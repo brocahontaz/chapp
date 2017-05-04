@@ -8,6 +8,8 @@ public class ChatMessage {
     private String message;
     private String conversationID;
     private String msgID;
+    private String imgPath;
+    private String senderName;
 
     public ChatMessage() {
 
@@ -25,6 +27,22 @@ public class ChatMessage {
 
     public String getMsgID() {
         return this.msgID;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    public String getImgPath() {
+        return this.imgPath;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getSenderName() {
+        return this.senderName;
     }
 
     public void setSenderID(String senderID) {

@@ -38,7 +38,7 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
     private DatabaseReference databaseReference;
 
     private ArrayList<ChatMessage> msgs;
-    private ChannelAdapter msgAdapter;
+    private MsgAdapter msgAdapter;
 
     private ListView msgListView;
 
@@ -46,6 +46,11 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
 
     private UserInformation me;
     private UserInformation other;
+
+    private String otherID;
+
+    private String myImgPath;
+    private String myNickname;
 
     View myView;
 
@@ -92,7 +97,7 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
         databaseReference.child("conversations").child(this.getTag()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String otherID = dataSnapshot.getValue(ConversationInfo.class).getParticipantTwo();
+                otherID = dataSnapshot.getValue(ConversationInfo.class).getParticipantTwo();
 
                 databaseReference.child("users").child(otherID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -127,10 +132,10 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
             postMessage();
         } else if (v == message) {
 
-            /*
+
             if (!msgs.isEmpty()) {
-                channelListView.setSelection(msgAdapter.getCount() - 1);
-            }*/
+                msgListView.setSelection(msgAdapter.getCount() - 1);
+            }
         }
     }
 
@@ -164,10 +169,65 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
 
     private void showData(DataSnapshot ds) {
 
+        /*
+        databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                me = dataSnapshot.getValue(UserInformation.class);
+                myImgPath = me.getImgPath();
+                myNickname = me.getNickname();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+
         for (DataSnapshot dats : ds.getChildren()) {
             final ChatMessage msg = dats.getValue(ChatMessage.class);
+            msg.setMsgID(dats.getKey());
 
-            if(msg.getConversationID().equals(this.getTag())) {
+            if(msg.getConversationID().equals(this.getTag()) && !msgs.contains(msg)) {
+
+                /*
+                if(msg.getSenderID().equals(otherID)) {
+                    msg.setImgPath(other.getImgPath());
+                    msg.setSenderName(other.getNickname());
+                } else {
+                    msg.setSenderName(myNickname);
+                    msg.setImgPath(myImgPath);
+                }
+                */
+
+                databaseReference.child("users").child(msg.getSenderID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String username = dataSnapshot.getValue(UserInformation.class).getNickname();
+                        String imgPath = dataSnapshot.getValue(UserInformation.class).getImgPath();
+                        msg.setSenderName(username);
+                        msg.setImgPath(imgPath);
+
+                        try {
+                            if(getActivity() != null) {
+                                msgAdapter = new MsgAdapter(getActivity(), msgs);
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        msgListView.setAdapter(msgAdapter);
+                        msgListView.setSelection(msgAdapter.getCount() - 1);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                msgs.add(msg);
 
             }
 

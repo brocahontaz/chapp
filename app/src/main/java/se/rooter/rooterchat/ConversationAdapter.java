@@ -12,8 +12,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -31,6 +35,10 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
     private TextView latestMsg;
     private ImageView avatar;
     private ImageView avatarRound;
+    private FirebaseAuth rooterAuth;
+    private DatabaseReference databaseReference;
+
+    private String latestMsgText;
 
     public ConversationAdapter(Context context, ArrayList<ConversationInfo> convos) {
         super(context, 0, convos);
@@ -52,7 +60,30 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
 
         String otherNick = convo.getOtherNickname();
         String imgpath = convo.getOtherImgPath();
-        String latestMsgText = convo.getLatestMsg();
+
+        rooterAuth = FirebaseAuth.getInstance();
+        if(convo.getLatestPoster().equals(rooterAuth.getCurrentUser().getUid())) {
+            latestMsgText = "You: ";
+        }
+
+        latestMsgText += convo.getLatestMsg();
+
+        rooterAuth = FirebaseAuth.getInstance();
+        /*databaseReference = FirebaseDatabase.getInstance().getReference().child("conversations").child(convo.getId());
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                latestMsgText = dataSnapshot.getValue(ConversationInfo.class).getLatestMsg();
+                latestMsg.setText(latestMsgText);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
+
 
         //Log.d("name", otherNick);
 

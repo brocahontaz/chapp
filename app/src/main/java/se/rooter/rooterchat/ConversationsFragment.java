@@ -75,10 +75,11 @@ public class ConversationsFragment extends Fragment {
                             convoInfo.setOtherNickname(nickname);
                             convoInfo.setOtherImgPath(imgpath);
 
-                            databaseReference.child("conversations").child(convoKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            databaseReference.child("conversations").child(convoKey).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     convoInfo.setLatestMsg(dataSnapshot.getValue(ConversationInfo.class).getLatestMsg());
+                                    convoInfo.setLatestPoster(dataSnapshot.getValue(ConversationInfo.class).getLatestPoster());
                                     if(!conversations.contains(convoInfo)) {
                                         conversations.add(convoInfo);
                                     }

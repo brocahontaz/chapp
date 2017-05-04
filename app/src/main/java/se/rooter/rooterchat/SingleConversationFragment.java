@@ -150,6 +150,7 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
         if(!chatMessage.equals("")) {
 
             databaseReference.child("conversations").child(this.getTag()).child("latestMsg").setValue(chatMessage);
+            databaseReference.child("conversations").child(this.getTag()).child("latestPoster").setValue(senderID);
 
             DatabaseReference newref = databaseReference.child("messages").push();
 

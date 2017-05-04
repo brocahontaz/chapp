@@ -9,6 +9,7 @@ public class ConversationInfo {
     private String id;
     private String otherNickname;
     private String otherImgPath;
+    private String latestPoster;
 
     public ConversationInfo() {
 
@@ -17,6 +18,14 @@ public class ConversationInfo {
     public ConversationInfo(String participantOne, String participantTwo) {
         this.participantOne = participantOne;
         this.participantTwo = participantTwo;
+    }
+
+    public void setLatestPoster(String latestPoster) {
+        this.latestPoster = latestPoster;
+    }
+
+    public String getLatestPoster() {
+        return this.latestPoster;
     }
 
     public String getOtherNickname() {

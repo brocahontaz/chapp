@@ -31,14 +31,13 @@
             android:id="@+id/messageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/userNickname"
             android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_toEndOf="@+id/userNickname"
             android:textSize="12sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/userNickname"
             app:layout_constraintLeft_toRightOf="@+id/userNickname"
-            tools:text="3/4/17 15:04" />
+            tools:text="3/4/17 15:04"
+            android:layout_alignBottom="@+id/userNickname"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:id="@+id/userNickname"

@@ -23,7 +23,10 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
@@ -33,6 +36,7 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
 
     private TextView userName;
     private TextView latestMsg;
+    private TextView dateTime;
     private ImageView avatar;
     private ImageView avatarRound;
     private FirebaseAuth rooterAuth;
@@ -57,16 +61,25 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
         userName = (TextView) convertView.findViewById(R.id.userNickname);
         avatarRound = (ImageView) convertView.findViewById(R.id.profile_image);
         latestMsg = (TextView)convertView.findViewById(R.id.latestMsg);
+        dateTime = (TextView) convertView.findViewById(R.id.dateTime);
 
         String otherNick = convo.getOtherNickname();
         String imgpath = convo.getOtherImgPath();
+        String dateEpochStr = convo.getLatestPostDate();
+        long dateEpochLong = Long.valueOf(dateEpochStr).longValue();
+        Date originalDate = new Date(dateEpochLong);
+
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String localTime = date.format(originalDate);
 
         rooterAuth = FirebaseAuth.getInstance();
         if(convo.getLatestPoster().equals(rooterAuth.getCurrentUser().getUid())) {
-            latestMsgText = "You: ";
+            latestMsgText = "You: " + convo.getLatestMsg();
+        } else {
+            latestMsgText = convo.getLatestMsg();
         }
 
-        latestMsgText += convo.getLatestMsg();
+
 
         rooterAuth = FirebaseAuth.getInstance();
         /*databaseReference = FirebaseDatabase.getInstance().getReference().child("conversations").child(convo.getId());
@@ -87,6 +100,7 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
 
         //Log.d("name", otherNick);
 
+        dateTime.setText(localTime);
         userName.setText(otherNick);
         Picasso.with(getContext()).load(imgpath).resize(40,40).placeholder(R.drawable.ic_action_name).into(avatarRound);
         latestMsg.setText(latestMsgText);

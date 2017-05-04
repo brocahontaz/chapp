@@ -19,7 +19,10 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
@@ -30,20 +33,12 @@ public class MsgAdapter extends ArrayAdapter<ChatMessage> {
     private DatabaseReference databaseReference;
     private UserInformation user;
     private TextView userName;
-    private ImageView avatar;
     private ImageView avatarRound;
-    private String nick = "";
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
-    private ArrayList<ImageView> imgs;
-    private Context context;
-    private final int radius = 5;
-    private final int margin = 5;
-    private final Transformation transformation = new RoundedCornersTransformation(radius, margin);
+    private TextView messageTime;
+
 
     public MsgAdapter(Context context, ArrayList<ChatMessage> messages) {
         super(context, 0, messages);
-        imgs = new ArrayList<ImageView>();
     }
 
     @NonNull
@@ -58,12 +53,20 @@ public class MsgAdapter extends ArrayAdapter<ChatMessage> {
 
         userName = (TextView) convertView.findViewById(R.id.userNickname);
         TextView message = (TextView) convertView.findViewById(R.id.userMessage);
-        ImageView userAvatar = (ImageView) convertView.findViewById(R.id.userAvatar);
-        avatar = (ImageView) convertView.findViewById(R.id.userAvatar);
         avatarRound = (ImageView) convertView.findViewById(R.id.profile_image);
+        messageTime = (TextView) convertView.findViewById(R.id.messageTime);
 
         String thisUserId = chatMsg.getSenderID();
         String imgPath = chatMsg.getImgPath();
+
+        String dateEpochStr = chatMsg.getPostDate();
+        long dateEpochLong = Long.valueOf(dateEpochStr).longValue();
+        Date originalDate = new Date(dateEpochLong);
+
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String localTime = date.format(originalDate);
+
+        messageTime.setText(localTime);
 
         Picasso.with(getContext()).load(imgPath).resize(50,50).placeholder(R.drawable.ic_action_name).into(avatarRound);
 

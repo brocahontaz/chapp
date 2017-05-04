@@ -1,7 +1,9 @@
 package se.rooter.rooterchat;
 
 
-public class ConversationInfo {
+import android.support.annotation.NonNull;
+
+public class ConversationInfo implements Comparable<ConversationInfo> {
     private String participantOne;
     private String participantTwo;
     private String receiver;
@@ -10,6 +12,7 @@ public class ConversationInfo {
     private String otherNickname;
     private String otherImgPath;
     private String latestPoster;
+    private String latestPostDate;
 
     public ConversationInfo() {
 
@@ -18,6 +21,14 @@ public class ConversationInfo {
     public ConversationInfo(String participantOne, String participantTwo) {
         this.participantOne = participantOne;
         this.participantTwo = participantTwo;
+    }
+
+    public void setLatestPostDate(String latestPostDate) {
+        this.latestPostDate = latestPostDate;
+    }
+
+    public String getLatestPostDate() {
+        return this.latestPostDate;
     }
 
     public void setLatestPoster(String latestPoster) {
@@ -108,6 +119,11 @@ public class ConversationInfo {
     @Override
     public int hashCode() {
         return this.id.hashCode();
+    }
+
+    @Override
+    public int compareTo(@NonNull ConversationInfo o) {
+        return this.latestPostDate.compareTo(o.latestPostDate);
     }
 
 

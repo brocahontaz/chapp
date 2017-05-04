@@ -80,6 +80,7 @@ public class ConversationsFragment extends Fragment {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     convoInfo.setLatestMsg(dataSnapshot.getValue(ConversationInfo.class).getLatestMsg());
                                     convoInfo.setLatestPoster(dataSnapshot.getValue(ConversationInfo.class).getLatestPoster());
+                                    convoInfo.setLatestPostDate(dataSnapshot.getValue(ConversationInfo.class).getLatestPostDate());
                                     if(!conversations.contains(convoInfo)) {
                                         conversations.add(convoInfo);
                                     }
@@ -93,6 +94,9 @@ public class ConversationsFragment extends Fragment {
                                     }
 
                                     conversationsList.setAdapter(convoAdapter);
+                                    if(!conversations.isEmpty()) {
+                                        Collections.sort(conversations, new ConversationComparator());
+                                    }
                                 }
 
                                 @Override

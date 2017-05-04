@@ -1,5 +1,6 @@
 package se.rooter.rooterchat;
 
+import java.util.Date;
 import java.util.Random;
 
 public class ChatMessage {
@@ -10,6 +11,7 @@ public class ChatMessage {
     private String msgID;
     private String imgPath;
     private String senderName;
+    private String postDate;
 
     public ChatMessage() {
 
@@ -19,6 +21,21 @@ public class ChatMessage {
         this.senderID = senderID;
         this.message = message;
         this.conversationID = conversationID;
+    }
+
+    public ChatMessage(String senderID, String message, String conversationID, String postDate) {
+        this.senderID = senderID;
+        this.message = message;
+        this.conversationID = conversationID;
+        this.postDate = postDate;
+    }
+
+    public void setPostDate(String postDate) {
+        this.postDate = postDate;
+    }
+
+    public String getPostDate() {
+        return this.postDate;
     }
 
     public void setMsgID(String msgID) {

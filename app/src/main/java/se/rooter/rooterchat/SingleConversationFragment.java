@@ -3,6 +3,7 @@ package se.rooter.rooterchat;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +27,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 public class SingleConversationFragment extends Fragment implements View.OnClickListener {
 
@@ -145,12 +150,24 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
         String chatMessage = message.getText().toString().trim();
         String conversationID = this.getTag();
 
-        ChatMessage msg = new ChatMessage(senderID, chatMessage, conversationID);
+        DateFormat date = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        date.setTimeZone(TimeZone.getDefault());
+        String localTime = date.format(new Date());
+
+        Date now = new Date();
+        long epoch = now.getTime();
+        String epochStr = Long.toString(epoch);
+
+        //Log.d("time", DateFormat.getDateTimeInstance().format(new Date()));
+        Log.d("time", localTime);
+
+        ChatMessage msg = new ChatMessage(senderID, chatMessage, conversationID, epochStr);
 
         if(!chatMessage.equals("")) {
 
             databaseReference.child("conversations").child(this.getTag()).child("latestMsg").setValue(chatMessage);
             databaseReference.child("conversations").child(this.getTag()).child("latestPoster").setValue(senderID);
+            databaseReference.child("conversations").child(this.getTag()).child("latestPostDate").setValue(epochStr);
 
             DatabaseReference newref = databaseReference.child("messages").push();
 

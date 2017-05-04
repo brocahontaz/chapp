@@ -65,62 +65,7 @@ public class MsgAdapter extends ArrayAdapter<ChatMessage> {
         String thisUserId = chatMsg.getSenderID();
         String imgPath = chatMsg.getImgPath();
 
-/*
-        storage = FirebaseStorage.getInstance();
-        storageRef = storage.getReferenceFromUrl("gs://rooterchat.appspot.com/img/avatars/").child(thisUserId+"/pic");
-*/
-
-        //Picasso.with(getContext()).load(imgPath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
         Picasso.with(getContext()).load(imgPath).resize(50,50).placeholder(R.drawable.ic_action_name).into(avatarRound);
-
-
-        //String url = storageRef.getDownloadUrl().getResult().toString();
-        //Picasso.with(context).load(url).resize(40, 40).placeholder(R.drawable.ic_action_name).into(avatar);
-
-
-
-        /*storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.with(getContext()).load(uri).into(avatar);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });*/
-
-
-/*
-        try {
-                if(!MainChatActivity.chappdb.checkIfRecordExists(thisUserId)) {
-                    storageRef.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            MainChatActivity.chappdb.insertData(channelMessage.getSenderID(), img);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-
-                        }
-                    });
-
-                }
-
-            avatar.setImageBitmap(MainChatActivity.chappdb.getData(thisUserId));
-
-        } catch (SQLiteException e) {
-            e.printStackTrace();
-        }
- */
-        /*
-        if(MainChatActivity.chappdb.checkIfRecordExists(thisUserId)) {
-
-        }*/
-
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
         user = new UserInformation();
@@ -133,7 +78,4 @@ public class MsgAdapter extends ArrayAdapter<ChatMessage> {
         return convertView;
     }
 
-    private void showData(DataSnapshot ds) {
-
-    }
 }

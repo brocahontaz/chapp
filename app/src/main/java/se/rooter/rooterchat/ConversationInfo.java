@@ -5,6 +5,10 @@ public class ConversationInfo {
     private String participantOne;
     private String participantTwo;
     private String receiver;
+    private String latestMsg;
+    private String id;
+    private String otherNickname;
+    private String otherImgPath;
 
     public ConversationInfo() {
 
@@ -15,8 +19,40 @@ public class ConversationInfo {
         this.participantTwo = participantTwo;
     }
 
+    public String getOtherNickname() {
+        return this.otherNickname;
+    }
+
+    public void setOtherNickname(String otherNickname) {
+        this.otherNickname = otherNickname;
+    }
+
+    public String getOtherImgPath() {
+        return this.otherImgPath;
+    }
+
+    public void setOtherImgPath(String otherImgPath) {
+        this.otherImgPath = otherImgPath;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public ConversationInfo(String receiver) {
         this.receiver = receiver;
+    }
+
+    public String getLatestMsg() {
+        return this.latestMsg;
+    }
+
+    public void setLatestMsg(String latestMsg) {
+        this.latestMsg = latestMsg;
     }
 
     public void setReceiver(String receiver) {
@@ -41,6 +77,28 @@ public class ConversationInfo {
 
     public String getParticipantTwo() {
         return this.participantTwo;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if(obj == this) {
+            return true;
+        }
+        if(!(obj instanceof ChannelMessage)) {
+            return false;
+        }
+
+        ConversationInfo convoInfo = (ConversationInfo) obj;
+
+        return this.id.equals(convoInfo.id);
+
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
     }
 
 

@@ -26,11 +26,14 @@ public class FriendInfoDialog extends DialogFragment {
     private AlertDialog.Builder builder;
     private DatabaseReference databaseReference;
     private DatabaseReference databaseReference2;
+    private DatabaseReference databaseReferenceMe;
+    private DatabaseReference databaseReferenceOther;
     private FirebaseAuth rooterAuth;
     private String id;
     private int position;
     private FriendAdapter friendAdapter;
     private HashMap<String, Object> convoMap;
+    private HashMap<String, Object> convoMap2;
     private boolean hasConvo;
     String convoID;
 
@@ -110,11 +113,15 @@ public class FriendInfoDialog extends DialogFragment {
 
         convoID = newRef2.getKey();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(rooterAuth.getCurrentUser().getUid()).child("conversations").child(newRef2.getKey());
+        databaseReferenceMe = FirebaseDatabase.getInstance().getReference().child("users").child(rooterAuth.getCurrentUser().getUid()).child("conversations").child(newRef2.getKey());
+        databaseReferenceOther = FirebaseDatabase.getInstance().getReference().child("users").child(id).child("conversations").child(newRef2.getKey());
 
         convoMap = new HashMap<String, Object>();
         convoMap.put(id, true);
-        databaseReference.updateChildren(convoMap);
+        convoMap2 = new HashMap<String, Object>();
+        convoMap2.put(rooterAuth.getCurrentUser().getUid(), true);
+        databaseReferenceMe.updateChildren(convoMap);
+        databaseReferenceOther.updateChildren(convoMap2);
 
         dismiss();
         FragmentManager fragmentManager = getFragmentManager();

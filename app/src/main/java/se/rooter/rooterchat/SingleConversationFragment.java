@@ -57,6 +57,8 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
     private String myImgPath;
     private String myNickname;
 
+    private String tag;
+
     View myView;
 
     @Nullable
@@ -89,6 +91,8 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
 
         msgs = new ArrayList<ChatMessage>();
 
+        tag = this.getTag();
+
         databaseReference.child("messages").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -103,6 +107,12 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 otherID = dataSnapshot.getValue(ConversationInfo.class).getParticipantTwo();
+                if(otherID.equals(rooterAuth.getCurrentUser().getUid())) {
+                    otherID = dataSnapshot.getValue(ConversationInfo.class).getParticipantOne();
+                    Log.d("id", otherID);
+                }
+
+                databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid()).child("conversations").child(tag).child(otherID).setValue(true);
 
                 databaseReference.child("users").child(otherID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -168,6 +178,7 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
             databaseReference.child("conversations").child(this.getTag()).child("latestMsg").setValue(chatMessage);
             databaseReference.child("conversations").child(this.getTag()).child("latestPoster").setValue(senderID);
             databaseReference.child("conversations").child(this.getTag()).child("latestPostDate").setValue(epochStr);
+            databaseReference.child("users").child(otherID).child("conversations").child(this.getTag()).child(rooterAuth.getCurrentUser().getUid()).setValue(false);
 
             DatabaseReference newref = databaseReference.child("messages").push();
 
@@ -208,6 +219,11 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
         for (DataSnapshot dats : ds.getChildren()) {
             final ChatMessage msg = dats.getValue(ChatMessage.class);
             msg.setMsgID(dats.getKey());
+            msg.setIsViewed(true);
+            String convoID = dats.getValue(ChatMessage.class).getConversationID();
+            databaseReference.child("messages").child(dats.getKey()).child("isViewed").setValue(true);
+
+
 
             if(msg.getConversationID().equals(this.getTag()) && !msgs.contains(msg)) {
 

@@ -2,6 +2,7 @@ package se.rooter.rooterchat;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
     private TextView userName;
     private TextView latestMsg;
     private TextView dateTime;
+    private TextView newText;
     private ImageView avatar;
     private ImageView avatarRound;
     private FirebaseAuth rooterAuth;
@@ -62,6 +64,7 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
         avatarRound = (ImageView) convertView.findViewById(R.id.profile_image);
         latestMsg = (TextView)convertView.findViewById(R.id.latestMsg);
         dateTime = (TextView) convertView.findViewById(R.id.dateTime);
+        newText = (TextView) convertView.findViewById(R.id.newText);
 
         String otherNick = convo.getOtherNickname();
         String imgpath = convo.getOtherImgPath();
@@ -76,8 +79,12 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
             localTime = "No posts yet";
         }
 
-
-
+        if (!convo.getIsViewed()) {
+            newText.setVisibility(View.VISIBLE);
+            dateTime.setTextColor(Color.parseColor("#FF4081"));
+        } else {
+            newText.setVisibility(View.GONE);
+        }
 
         rooterAuth = FirebaseAuth.getInstance();
         if(convo.getLatestPoster().equals(rooterAuth.getCurrentUser().getUid())) {

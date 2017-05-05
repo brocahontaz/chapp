@@ -56,5 +56,18 @@
             android:layout_alignBottom="@+id/userNickname"
             android:layout_alignParentEnd="true" />
 
+        <TextView
+            android:id="@+id/newText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/dateTime"
+            android:layout_alignBottom="@+id/dateTime"
+            android:layout_marginRight="4dp"
+            android:layout_toStartOf="@+id/dateTime"
+            android:text="New!"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 </LinearLayout>

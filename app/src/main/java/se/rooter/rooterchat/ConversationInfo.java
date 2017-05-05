@@ -13,6 +13,7 @@ public class ConversationInfo implements Comparable<ConversationInfo> {
     private String otherImgPath;
     private String latestPoster;
     private String latestPostDate;
+    private boolean isViewed;
 
     public ConversationInfo() {
 
@@ -21,6 +22,14 @@ public class ConversationInfo implements Comparable<ConversationInfo> {
     public ConversationInfo(String participantOne, String participantTwo) {
         this.participantOne = participantOne;
         this.participantTwo = participantTwo;
+    }
+
+    public void setIsViewed(boolean isViewed) {
+        this.isViewed = isViewed;
+    }
+
+    public boolean getIsViewed() {
+        return this.isViewed;
     }
 
     public void setLatestPostDate(String latestPostDate) {
@@ -105,7 +114,7 @@ public class ConversationInfo implements Comparable<ConversationInfo> {
         if(obj == this) {
             return true;
         }
-        if(!(obj instanceof ChannelMessage)) {
+        if(!(obj instanceof ConversationInfo)) {
             return false;
         }
 

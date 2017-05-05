@@ -12,6 +12,7 @@ public class ChatMessage {
     private String imgPath;
     private String senderName;
     private String postDate;
+    private boolean isViewed;
 
     public ChatMessage() {
 
@@ -28,6 +29,15 @@ public class ChatMessage {
         this.message = message;
         this.conversationID = conversationID;
         this.postDate = postDate;
+    }
+
+
+    public boolean getIsViewed() {
+        return this.isViewed;
+    }
+
+    public void setIsViewed(boolean isViewed) {
+        this.isViewed = isViewed;
     }
 
     public void setPostDate(String postDate) {

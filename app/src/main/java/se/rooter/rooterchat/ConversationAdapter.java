@@ -66,11 +66,18 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
         String otherNick = convo.getOtherNickname();
         String imgpath = convo.getOtherImgPath();
         String dateEpochStr = convo.getLatestPostDate();
-        long dateEpochLong = Long.valueOf(dateEpochStr).longValue();
-        Date originalDate = new Date(dateEpochLong);
+        String localTime;
+        if (!dateEpochStr.equals("")) {
+            long dateEpochLong = Long.valueOf(dateEpochStr).longValue();
+            Date originalDate = new Date(dateEpochLong);
+            DateFormat date = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            localTime = date.format(originalDate);
+        } else {
+            localTime = "No posts yet";
+        }
 
-        DateFormat date = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        String localTime = date.format(originalDate);
+
+
 
         rooterAuth = FirebaseAuth.getInstance();
         if(convo.getLatestPoster().equals(rooterAuth.getCurrentUser().getUid())) {

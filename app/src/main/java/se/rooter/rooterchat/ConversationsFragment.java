@@ -42,6 +42,7 @@ public class ConversationsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         myView = inflater.inflate(R.layout.conversations_layout, container, false);
 
         newConvo = (EditText) myView.findViewById(R.id.editTextNewConvo);

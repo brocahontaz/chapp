@@ -109,6 +109,9 @@ public class FriendInfoDialog extends DialogFragment {
         DatabaseReference newRef2 = databaseReference2.push();
 
         ConversationInfo convoInfo = new ConversationInfo(rooterAuth.getCurrentUser().getUid(), id);
+        convoInfo.setLatestMsg("");
+        convoInfo.setLatestPoster("");
+        convoInfo.setLatestPostDate("");
         newRef2.setValue(convoInfo);
 
         convoID = newRef2.getKey();

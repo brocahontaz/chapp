@@ -26,6 +26,9 @@ import java.util.Date;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
+/**
+ * ArrayAdapter for private messages, extending ArrayAdapter
+ */
 public class MsgAdapter extends ArrayAdapter<ChatMessage> {
 
     private static final String TAG = "MsgAdapter";

@@ -4,8 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import static java.security.AccessController.getContext;
-
 /**
  * Activity for the About page
  */

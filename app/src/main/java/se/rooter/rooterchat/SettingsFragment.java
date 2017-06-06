@@ -3,7 +3,6 @@ package se.rooter.rooterchat;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +39,10 @@ import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 import static android.app.Activity.RESULT_OK;
 
+
+/**
+ * Fragment for the settings view
+ */
 public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "SettingsFragment";
@@ -58,7 +60,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private String userID;
 
-    private ProgressBar progressBar;
     private ProgressDialog progressDialog;
 
     ImageView avatar;

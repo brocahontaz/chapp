@@ -1,11 +1,5 @@
 package se.rooter.rooterchat;
 
-
-import android.graphics.Bitmap;
-import android.widget.ImageView;
-
-import java.nio.channels.Channel;
-
 /**
  * Class representing messages in channels
  */
@@ -18,7 +12,6 @@ public class ChannelMessage {
     private String message;
     private String chatChannel;
     private String imgPath;
-    private Bitmap img;
 
     /**
      * Default empty constructor
@@ -45,9 +38,10 @@ public class ChannelMessage {
 
     /**
      * Create a new ChannelMessage with id,  senders id, message and chat channel
-     * @param msgID the id
-     * @param senderID the senders id
-     * @param message the message
+     *
+     * @param msgID       the id
+     * @param senderID    the senders id
+     * @param message     the message
      * @param chatChannel the chat channel
      * @constructor
      */
@@ -60,6 +54,7 @@ public class ChannelMessage {
 
     /**
      * Set the imgpath
+     *
      * @param imgPath the imgpath
      */
     public void setImgPath(String imgPath) {
@@ -68,6 +63,7 @@ public class ChannelMessage {
 
     /**
      * Get the imgpath
+     *
      * @return String the imgpath
      */
     public String getImgPath() {
@@ -76,6 +72,7 @@ public class ChannelMessage {
 
     /**
      * Set the sender name
+     *
      * @param senderName the sender name
      */
     public void setSenderName(String senderName) {
@@ -84,6 +81,7 @@ public class ChannelMessage {
 
     /**
      * Get the sender name
+     *
      * @return String the sender name
      */
     public String getSenderName() {
@@ -92,6 +90,7 @@ public class ChannelMessage {
 
     /**
      * Set the message id
+     *
      * @param msgID the message id
      */
     public void setMsgID(String msgID) {
@@ -100,6 +99,7 @@ public class ChannelMessage {
 
     /**
      * Get the message id
+     *
      * @return String the message id
      */
     public String getMsgID() {
@@ -108,6 +108,7 @@ public class ChannelMessage {
 
     /**
      * Set the sender id
+     *
      * @param senderID the sender id
      */
     public void setSenderID(String senderID) {
@@ -116,6 +117,7 @@ public class ChannelMessage {
 
     /**
      * Get the sender id
+     *
      * @return String the sender id
      */
     public String getSenderID() {
@@ -124,6 +126,7 @@ public class ChannelMessage {
 
     /**
      * Set the message
+     *
      * @param message the message
      */
     public void setMessage(String message) {
@@ -132,6 +135,7 @@ public class ChannelMessage {
 
     /**
      * Return the message
+     *
      * @return String the message
      */
     public String getMessage() {
@@ -140,6 +144,7 @@ public class ChannelMessage {
 
     /**
      * Set the channel
+     *
      * @param chatChannel the channel
      */
     public void setChannel(String chatChannel) {
@@ -148,6 +153,7 @@ public class ChannelMessage {
 
     /**
      * Get the channel
+     *
      * @return String the channel
      */
     public String getChannel() {

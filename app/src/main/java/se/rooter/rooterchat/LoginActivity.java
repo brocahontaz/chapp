@@ -1,13 +1,11 @@
 package se.rooter.rooterchat;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+/**
+ * Activity for login
+ */
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,14 +57,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     } else {
                         // User is signed in
-                        Log.d(TAG, "onAuthStateChanged:signed_in: " + user.getUid());
                         toastMessage("Successfully signed in with " + user.getEmail());
                         finish();
                         startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
                     }
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
                 // ...
             }

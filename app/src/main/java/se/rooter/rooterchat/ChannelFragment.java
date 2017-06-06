@@ -4,47 +4,36 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.database.sqlite.SQLiteException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 
+/**
+ * Fragment for the channels
+ */
 public class ChannelFragment extends Fragment implements View.OnClickListener {
 
     private FirebaseAuth rooterAuth;
@@ -66,7 +55,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
     private ChannelAdapter msgAdapter;
 
     private FirebaseStorage storage;
-    private StorageReference storageRef;
 
     private ListView channelListView;
 

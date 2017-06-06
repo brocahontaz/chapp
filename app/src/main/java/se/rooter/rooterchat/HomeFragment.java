@@ -27,6 +27,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+
+/**
+ * Fragment for the home view, in other words the channel list
+ */
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private FirebaseAuth rooterAuth;

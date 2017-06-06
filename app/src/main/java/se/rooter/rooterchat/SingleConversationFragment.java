@@ -3,18 +3,15 @@ package se.rooter.rooterchat;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +30,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * Fragment for single (private) conversations
+ */
 public class SingleConversationFragment extends Fragment implements View.OnClickListener {
 
     private ListView conversationsList;
@@ -49,7 +49,6 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
 
     private TextView receiverName;
 
-    private UserInformation me;
     private UserInformation other;
 
     private String otherID;
@@ -109,7 +108,6 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
                 otherID = dataSnapshot.getValue(ConversationInfo.class).getParticipantTwo();
                 if(otherID.equals(rooterAuth.getCurrentUser().getUid())) {
                     otherID = dataSnapshot.getValue(ConversationInfo.class).getParticipantOne();
-                    Log.d("id", otherID);
                 }
 
                 databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid()).child("conversations").child(tag).child(otherID).setValue(true);

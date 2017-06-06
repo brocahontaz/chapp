@@ -2,11 +2,8 @@ package se.rooter.rooterchat;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -41,6 +38,10 @@ import com.squareup.picasso.Transformation;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
+/**
+ * Main Activity for signed in users, handling all the different fragment views and the menu
+ */
+
 public class MainChatActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -72,10 +73,6 @@ public class MainChatActivity extends AppCompatActivity
     private final int margin = 0;
     private final Transformation transformation = new RoundedCornersTransformation(radius, margin);
 
-
-
-    public static Bitmap userImg;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,11 +93,9 @@ public class MainChatActivity extends AppCompatActivity
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
 
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
                     toastMessage("Successfully signed out");
                     finish();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -110,13 +105,7 @@ public class MainChatActivity extends AppCompatActivity
         };
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "TODO", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.hide();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

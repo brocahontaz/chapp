@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 /**
- * Created by Rooter on 2017-04-17.
+ * Fragment for the contact list
  */
 
 public class FriendsFragment extends Fragment implements View.OnClickListener {

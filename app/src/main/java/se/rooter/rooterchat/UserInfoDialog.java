@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Class for the dialog when adding users to contactlist in a channel
+ * Class for the dialog when adding users to contactlist in a channel, extending DialogFragment
  */
 
 public class UserInfoDialog extends DialogFragment {

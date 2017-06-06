@@ -3,6 +3,9 @@ package se.rooter.rooterchat;
 
 import android.support.annotation.NonNull;
 
+/**
+ * Class representing private conversations
+ */
 public class ConversationInfo implements Comparable<ConversationInfo> {
     private String participantOne;
     private String participantTwo;
@@ -15,10 +18,20 @@ public class ConversationInfo implements Comparable<ConversationInfo> {
     private String latestPostDate;
     private boolean isViewed;
 
+    /**
+     * Default empty constructor
+     *
+     * @constructor
+     */
     public ConversationInfo() {
 
     }
 
+    /**
+     * Create a new ConversationInfo with both participants
+     * @param participantOne participant one
+     * @param participantTwo participant two
+     */
     public ConversationInfo(String participantOne, String participantTwo) {
         this.participantOne = participantOne;
         this.participantTwo = participantTwo;
@@ -111,10 +124,10 @@ public class ConversationInfo implements Comparable<ConversationInfo> {
     @Override
     public boolean equals(Object obj) {
 
-        if(obj == this) {
+        if (obj == this) {
             return true;
         }
-        if(!(obj instanceof ConversationInfo)) {
+        if (!(obj instanceof ConversationInfo)) {
             return false;
         }
 

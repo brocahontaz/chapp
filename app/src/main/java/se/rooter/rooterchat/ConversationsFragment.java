@@ -68,13 +68,6 @@ public class ConversationsFragment extends Fragment {
         databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid()).child("conversations").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                /*
-                conversations.clear();
-                if(convoAdapter != null) {
-                    convoAdapter.clear();
-                    convoAdapter.notifyDataSetChanged();
-                }*/
-
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
 
@@ -82,7 +75,7 @@ public class ConversationsFragment extends Fragment {
                     final ConversationInfo convoInfo = new ConversationInfo();
                     final boolean viewed = false;
                     convoInfo.setId(convoKey);
-                    //convoInfo.setIsViewed(ds.getValue(boolean.class));
+
 
                     databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid()).child("conversations").child(convoKey).addChildEventListener(new ChildEventListener() {
                         @Override
@@ -92,7 +85,7 @@ public class ConversationsFragment extends Fragment {
 
                         @Override
                         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                            //Log.d("change", dataSnapshot.getValue(boolean.class).toString());
+
                             convoInfo.setIsViewed(dataSnapshot.getValue(boolean.class));
                         }
 
@@ -142,15 +135,7 @@ public class ConversationsFragment extends Fragment {
                                         }
 
                                     }
-/*
-                                    try {
-                                        if (getActivity() != null) {
-                                            convoAdapter = new ConversationAdapter(getActivity(), conversations);
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-*/
+
                                     conversationsList.setAdapter(convoAdapter);
                                     if(!conversations.isEmpty()) {
                                         Collections.sort(conversations, new ConversationComparator());

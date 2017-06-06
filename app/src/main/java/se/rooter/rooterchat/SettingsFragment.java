@@ -102,23 +102,6 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
         avatar = (ImageView) myView.findViewById(R.id.profileImage);
         circleAvatar = (ImageView) myView.findViewById(R.id.profile_image);
-        //avatar.setImageBitmap(MainChatActivity.userImg);
-
-/*
-        storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                avatar.setImageBitmap(img);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-
-            }
-        });
-        */
-
 
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,23 +167,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
-                            //Bitmap img = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            //MainChatActivity.userImg = img;
-
-                            //avatar.setImageBitmap(img);
-                            //View hView = navigationView.getHeaderView(0);
-                            //ImageView navpic = (ImageView) hView.findViewById(R.id.userNavPic);
-                            //navpic.setImageBitmap(img);
 
                             String imgpath = taskSnapshot.getDownloadUrl().toString();
-                            //Picasso.with(getActivity()).load(imgpath).resize(110, 110).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(avatar);
-                            //Picasso.with(getActivity()).load(imgpath).resize(50, 50).centerCrop().transform(transformation).placeholder(R.drawable.ic_action_name).into(navpic);
 
                             saveUserImgPath(imgpath);
-
-                            //UserInformation updateUser = new UserInformation(userID, imgpath);
-
-
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

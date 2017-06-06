@@ -42,14 +42,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         rooterAuth = FirebaseAuth.getInstance();
 
-        // Check if user is already signed in
-        /*
-        if (rooterAuth.getCurrentUser() != null) {
-            finish();
-            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-        }
-        */
-
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {

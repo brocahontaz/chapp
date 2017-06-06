@@ -72,7 +72,7 @@ public class MainChatActivity extends AppCompatActivity
     private final int margin = 0;
     private final Transformation transformation = new RoundedCornersTransformation(radius, margin);
 
-    public static ChappDatabaseHelper chappdb;
+
 
     public static Bitmap userImg;
 
@@ -82,8 +82,6 @@ public class MainChatActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //chappdb = new ChappDatabaseHelper(this);
 
         settingsFragment = new SettingsFragment();
         homeFragment = new HomeFragment();
@@ -131,8 +129,6 @@ public class MainChatActivity extends AppCompatActivity
 
         View header = navigationView.getHeaderView(0);
 
-
-
         user = rooterAuth.getCurrentUser();
         userID = user.getUid();
 
@@ -169,30 +165,10 @@ public class MainChatActivity extends AppCompatActivity
         });
 
         storage = FirebaseStorage.getInstance();
-        //storageReference = storage.getReference().child("img").child("avatars").child(user.getUid() + "/pic");
 
-
-        //final Bitmap b= BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher);
         View hView = navigationView.getHeaderView(0);
-        //navpic = (ImageView) hView.findViewById(R.id.userNavPic);
-        navpicRound = (ImageView) hView.findViewById(R.id.profile_image);
-        /*
-        storageReference.getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                userImg = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                navpic.setImageBitmap(userImg);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                userImg = b;
-                navpic.setImageBitmap(userImg);
-            }
-        });
-        */
 
-        //navpic.setImageBitmap(userImg);
+        navpicRound = (ImageView) hView.findViewById(R.id.profile_image);
     }
 
 
@@ -209,16 +185,12 @@ public class MainChatActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_chat, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -237,7 +209,7 @@ public class MainChatActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -256,22 +228,6 @@ public class MainChatActivity extends AppCompatActivity
             finish();
         }
 
-/*
-        if (id == R.id.nav_home) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new HomeFragment()).addToBackStack("fragBack1").commit();
-        } else if (id == R.id.nav_conversations) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ConversationsFragment()).addToBackStack("fragBack2").commit();
-        } else if (id == R.id.nav_friends) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FriendsFragment()).addToBackStack("fragBack3").commit();
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_settings) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SettingsFragment()).addToBackStack("fragBack4").commit();
-        } else if (id == R.id.nav_logout) {
-            rooterAuth.signOut();
-            finish();
-        }
-*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

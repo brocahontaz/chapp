@@ -151,57 +151,6 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-
-        /*newref.addValueEventListener(new ValueEventListener() {
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserInformation uinfo = dataSnapshot.getValue(UserInformation.class);
-
-                friends = uinfo.getContacts();
-                if(friends != null) {
-                    for (String friend : friends) {
-                        databaseReference.child("users").child(friend).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                UserInformation userInfo = new UserInformation();
-                                userInfo.setNickname(dataSnapshot.getValue(UserInformation.class).getNickname());
-                                userInfo.setEmail(dataSnapshot.getValue(UserInformation.class).getEmail());
-                                userInfo.setImgPath(dataSnapshot.getValue(UserInformation.class).getImgPath());
-
-                                if(!friendsUsers.contains(userInfo)) {
-                                    friendsUsers.add(userInfo);
-                                }
-
-                                try {
-                                    if (getActivity() != null) {
-                                        friendAdapter = new FriendAdapter(getActivity(), friendsUsers);
-                                        if(!friendsUsers.isEmpty()) {
-                                            Collections.sort(friendsUsers, new UserComparator());
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                                friendsList.setAdapter(friendAdapter);
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });*/
-
         return myView;
     }
 
@@ -251,39 +200,11 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                                     toastMessage("Woops! Contact is already in your list :)");
                                 }
 
-                                /*ArrayList<String> contacts = me.getContacts();
-                                if(contacts == null) {
-                                    contacts = new ArrayList<String>();
-                                }*/
-
-                                /*
-                                if(!contacts.contains(friendID)) {
-                                    contacts.add(friendID);
-                                    friendMap = new HashMap<String, Object>();
-                                    friendMap.put(friendID, true);
-                                    dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").updateChildren(friendMap);
-*/
-                                    /*
-
-                                    dbref.child(rooterAuth.getCurrentUser().getUid()).child("contacts").setValue(contacts, new DatabaseReference.CompletionListener() {
-                                        public void onComplete(DatabaseError dberror, DatabaseReference ref) {
-                                            added = true;
-                                            toastMessage("Friend added, woo!");
-                                        }
-                                    });
-
-                                    */
-/*
-                                } else {
-                                    friendAlreadyExists = true;
-                                    //toastMessage("Cannot add friends already in your list. ");
-                                }
-*/
                             }
 
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                //toastMessage("Couldn't add friend. Be sure to provide a valid email.");
+
                             }
                         });
 
@@ -294,13 +215,13 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                //toastMessage("Couldn't add friend. Be sure to provide a valid email.");
+
             }
 
         });
 
         if(!added) {
-            //toastMessageLong("Woops! Contact couldn't be added. Please provide a valid mail.");
+
         }
 
         if (friendAlreadyExists) {

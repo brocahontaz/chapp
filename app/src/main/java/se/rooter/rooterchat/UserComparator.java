@@ -5,7 +5,7 @@ import android.hardware.usb.UsbRequest;
 import java.util.Comparator;
 
 /**
- * Created by Rooter on 2017-05-02.
+ * Comparator class for users
  */
 
 public class UserComparator implements Comparator<UserInformation> {

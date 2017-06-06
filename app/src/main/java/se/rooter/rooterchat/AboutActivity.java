@@ -6,6 +6,10 @@ import android.view.MenuItem;
 
 import static java.security.AccessController.getContext;
 
+/**
+ * Activity for the About page
+ */
+
 public class AboutActivity extends AppCompatActivity {
 
     @Override

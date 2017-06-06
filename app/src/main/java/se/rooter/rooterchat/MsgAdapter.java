@@ -75,8 +75,6 @@ public class MsgAdapter extends ArrayAdapter<ChatMessage> {
 
         userName.setText(chatMsg.getSenderName());
         message.setText(chatMsg.getMessage());
-        //avatar.setImageBitmap(channelMessage.getImg());
-
 
         return convertView;
     }

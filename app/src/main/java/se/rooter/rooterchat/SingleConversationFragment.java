@@ -168,9 +168,6 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
         long epoch = now.getTime();
         String epochStr = Long.toString(epoch);
 
-        //Log.d("time", DateFormat.getDateTimeInstance().format(new Date()));
-        Log.d("time", localTime);
-
         ChatMessage msg = new ChatMessage(senderID, chatMessage, conversationID, epochStr);
 
         if(!chatMessage.equals("")) {
@@ -201,21 +198,6 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
 
     private void showData(DataSnapshot ds) {
 
-        /*
-        databaseReference.child("users").child(rooterAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                me = dataSnapshot.getValue(UserInformation.class);
-                myImgPath = me.getImgPath();
-                myNickname = me.getNickname();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
         for (DataSnapshot dats : ds.getChildren()) {
             final ChatMessage msg = dats.getValue(ChatMessage.class);
             msg.setMsgID(dats.getKey());
@@ -226,16 +208,6 @@ public class SingleConversationFragment extends Fragment implements View.OnClick
 
 
             if(msg.getConversationID().equals(this.getTag()) && !msgs.contains(msg)) {
-
-                /*
-                if(msg.getSenderID().equals(otherID)) {
-                    msg.setImgPath(other.getImgPath());
-                    msg.setSenderName(other.getNickname());
-                } else {
-                    msg.setSenderName(myNickname);
-                    msg.setImgPath(myImgPath);
-                }
-                */
 
                 databaseReference.child("users").child(msg.getSenderID()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

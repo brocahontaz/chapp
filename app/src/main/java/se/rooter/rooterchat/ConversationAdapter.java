@@ -96,23 +96,6 @@ public class ConversationAdapter extends ArrayAdapter<ConversationInfo> {
 
 
         rooterAuth = FirebaseAuth.getInstance();
-        /*databaseReference = FirebaseDatabase.getInstance().getReference().child("conversations").child(convo.getId());
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                latestMsgText = dataSnapshot.getValue(ConversationInfo.class).getLatestMsg();
-                latestMsg.setText(latestMsgText);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
-
-        //Log.d("name", otherNick);
 
         dateTime.setText(localTime);
         userName.setText(otherNick);

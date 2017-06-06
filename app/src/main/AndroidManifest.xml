@@ -42,7 +42,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SettingsActivity" />
         <activity
             android:name=".MainChatActivity"
             android:label="@string/title_activity_main_chat"

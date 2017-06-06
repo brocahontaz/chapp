@@ -65,8 +65,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.hide();
 
-        //InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        //in.hideSoftInputFromWindow(editTextAddChannel.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -76,12 +74,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 String data = (String) parent.getItemAtPosition(position);
                 FragmentManager fragmentManager = getFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new ChannelFragment(), data).addToBackStack(data).commit();
-                //toastMessage(data);
+
             }
         });
 
         chatInfoList = new ArrayList<ChatInformation>();
-        //channels = new ArrayList<String>();
+
 
         databaseReference.child("chatChannels").addValueEventListener(new ValueEventListener() {
             @Override
@@ -136,8 +134,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         for (DataSnapshot dats : ds.getChildren()) {
             ChatInformation chatInfo = new ChatInformation();
             chatInfo.setChannelName(dats.getValue(ChatInformation.class).getChannelName());
-            //chatInfoList.add(chatInfo);
-            //channels = new ArrayList<String>();
+
             if(!channels.contains(chatInfo.getChannelName())) {
                 channels.add(chatInfo.getChannelName());
             }
@@ -154,8 +151,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
             channelListView.setAdapter(channelAdapter);
 
-            //chatArrayAdapter = new ArrayAdapter<ChatInformation>(this, R.layout.channel_list_item, chatInfoList);
-            //channelListView.setAdapter(chatArrayAdapter);
         }
     }
 

@@ -101,7 +101,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
 
         channelListView = (ListView) myView.findViewById(R.id.channelListView);
         channelListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
-        //channelListView.setStackFromBottom(true);
 
         channelListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -120,13 +119,12 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
                         newFragment.setArguments(bundle);
                         newFragment.show(getFragmentManager(), email);
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                     }
                 });
 
-
-                //toastMessage(data);
                 return true;
             }
         });
@@ -139,21 +137,12 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-/*
-        message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null&& (actionId == message.IME_ACTION_DONE)) {
-                    InputMethodManager in = (InputMethodManager) myView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    in.hideSoftInputFromWindow(message.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                }
-                return false;
-            }
-        });
-*/
+
         return myView;
     }
 
@@ -182,7 +171,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         String chatMessage = message.getText().toString().trim();
         ChannelMessage msg = new ChannelMessage(rooterAuth.getCurrentUser().getUid(), chatMessage, this.getTag());
 
-        if(!chatMessage.equals("")) {
+        if (!chatMessage.equals("")) {
             DatabaseReference newRef = databaseReference.child("chatChannelMessages").push();
 
             newRef.setValue(msg, new DatabaseReference.CompletionListener() {
@@ -196,16 +185,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
                 }
             });
 
-            /*
-            newRef.setValue(msg, new DatabaseReference.CompletionListener() {
-                public void onComplete(DatabaseError dberror, DatabaseReference ref) {
-                    if(dberror == null) {
-                        toastMessage("Message posted");
-                    } else {
-                        toastMessage("Woops! Something went wrong");
-                    }
-                }
-            });*/
         } else {
             toastMessage("Woops! Can't post empty messages");
 
@@ -218,42 +197,38 @@ public class ChannelFragment extends Fragment implements View.OnClickListener {
         for (DataSnapshot dats : ds.getChildren()) {
             final ChannelMessage msg = dats.getValue(ChannelMessage.class);
             msg.setMsgID(dats.getKey());
-            if(msg.getChannel().equals(this.getTag())) {
-            databaseReference.child("users").child(msg.getSenderID()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    String username = dataSnapshot.getValue(UserInformation.class).getNickname();
-                    String imgPath = dataSnapshot.getValue(UserInformation.class).getImgPath();
-                    //toastMessage(username);
-                    msg.setSenderName(username);
-                    msg.setImgPath(imgPath);
-                    try {
-                        if(getActivity() != null) {
-                            msgAdapter = new ChannelAdapter(getActivity(), msgs);
+            if (msg.getChannel().equals(this.getTag())) {
+                databaseReference.child("users").child(msg.getSenderID()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String username = dataSnapshot.getValue(UserInformation.class).getNickname();
+                        String imgPath = dataSnapshot.getValue(UserInformation.class).getImgPath();
 
+                        msg.setSenderName(username);
+                        msg.setImgPath(imgPath);
+                        try {
+                            if (getActivity() != null) {
+                                msgAdapter = new ChannelAdapter(getActivity(), msgs);
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                        channelListView.setAdapter(msgAdapter);
+                        channelListView.setSelection(msgAdapter.getCount() - 1);
                     }
 
-                    channelListView.setAdapter(msgAdapter);
-                    channelListView.setSelection(msgAdapter.getCount() - 1);
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
 
-            //toastMessage(msg.getMessage());
-            //if(msg.getChannel().equals(this.getTag())) {
-                if(!msgs.contains(msg)) {
+
+                if (!msgs.contains(msg)) {
                     msgs.add(msg);
                 }
             }
-
-
-
-            //channelListView.setAdapter(msgAdapter);
 
         }
     }

@@ -23,6 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * Activity for registration
+ */
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "MainActivity";
@@ -46,41 +50,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /* Get database reference and FirebaseAuth*/
         dbref = FirebaseDatabase.getInstance().getReference();
-
         rooterAuth = FirebaseAuth.getInstance();
 
-        /*
-        if (rooterAuth.getCurrentUser() != null) {
-            finish();
-            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-        }
-        */
-
+        /**
+         * Add authstatelistener
+         */
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                /* Get current user */
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                /* Check if user is signed in */
                 if (user != null) {
 
+                    /* Check if email is verified, login if so, otherwise send to login screen */
                     if(!rooterAuth.getCurrentUser().isEmailVerified()) {
-                        //toastMessage("Please verify your account");
-                        //rooterAuth.signOut();
-                        //finish();
+
                         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
                     } else {
 
-                        // User is signed in
-                        Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                         finish();
                         startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
+
                     }
 
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
 
@@ -158,11 +159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     progressDialog.dismiss();
                     rooterAuth.signOut();
                     toastMessage("Registered successfully. Please verify account via verification mail before logging in.");
-                    //finish();
-                    //startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                    //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 
-                    // Registering not working
                 } else {
                     toastMessage("Failed to register, please try again");
                     progressDialog.dismiss();

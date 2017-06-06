@@ -53,20 +53,6 @@ public class FriendAdapter extends ArrayAdapter<UserInformation> {
 
         final String id = user.getId();
 
-        /*
-        removeFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rooterAuth = FirebaseAuth.getInstance();
-                databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(rooterAuth.getCurrentUser().getUid()).child("contacts").child(id);
-
-                databaseReference.removeValue();
-                FriendAdapter.this.remove(FriendAdapter.this.getItem(pos2));
-                notifyDataSetChanged();
-            }
-        });
-        */
-
         String imgpath = user.getImgPath();
         String username = user.getNickname();
 

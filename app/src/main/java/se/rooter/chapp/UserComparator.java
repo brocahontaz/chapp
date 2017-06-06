@@ -1,6 +1,4 @@
-package se.rooter.rooterchat;
-
-import android.hardware.usb.UsbRequest;
+package se.rooter.chapp;
 
 import java.util.Comparator;
 

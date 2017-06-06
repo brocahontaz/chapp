@@ -1,4 +1,4 @@
-package se.rooter.rooterchat;
+package se.rooter.chapp;
 
 /**
  * Class representing messages in channels

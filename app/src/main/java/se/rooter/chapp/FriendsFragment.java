@@ -1,4 +1,4 @@
-package se.rooter.rooterchat;
+package se.rooter.chapp;
 
 import android.app.Fragment;
 import android.content.Context;

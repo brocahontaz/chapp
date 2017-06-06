@@ -1,4 +1,4 @@
-package se.rooter.rooterchat;
+package se.rooter.chapp;
 
 
 import android.content.Context;
@@ -11,20 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 /**
  * ArrayAdapter for private messages, extending ArrayAdapter

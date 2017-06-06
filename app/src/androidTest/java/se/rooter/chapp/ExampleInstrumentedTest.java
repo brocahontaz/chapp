@@ -1,4 +1,4 @@
-package se.rooter.rooterchat;
+package se.rooter.chapp;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

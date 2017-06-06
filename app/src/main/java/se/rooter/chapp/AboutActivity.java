@@ -1,4 +1,4 @@
-package se.rooter.rooterchat;
+package se.rooter.chapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

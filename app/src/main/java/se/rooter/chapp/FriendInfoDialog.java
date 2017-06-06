@@ -1,4 +1,4 @@
-package se.rooter.rooterchat;
+package se.rooter.chapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

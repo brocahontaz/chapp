@@ -1,4 +1,4 @@
-package se.rooter.rooterchat;
+package se.rooter.chapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,78 +17,93 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
- * Activity for login
+ * Activity for registration
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "MainActivity";
 
-    private Button buttonLogin;
-    private EditText editTextEmailLogin;
-    private EditText editTextPasswordLogin;
-    private TextView textViewSignup;
+    private Button buttonRegister;
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private TextView textViewSignin;
 
     private ProgressDialog progressDialog;
 
     private FirebaseAuth rooterAuth;
+
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private DatabaseReference dbref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_main);
 
+        /* Get database reference and FirebaseAuth*/
+        dbref = FirebaseDatabase.getInstance().getReference();
         rooterAuth = FirebaseAuth.getInstance();
 
+        /**
+         * Add authstatelistener
+         */
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
+                /* Get current user */
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                /* Check if user is signed in */
                 if (user != null) {
 
+                    /* Check if email is verified, login if so, otherwise send to login screen */
                     if(!rooterAuth.getCurrentUser().isEmailVerified()) {
-                        toastMessage("Please verify your account");
-                        rooterAuth.signOut();
-                        //finish();
-                       startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+
                     } else {
-                        // User is signed in
-                        toastMessage("Successfully signed in with " + user.getEmail());
+
                         finish();
                         startActivity(new Intent(getApplicationContext(), MainChatActivity.class));
+
                     }
+
                 } else {
                     // User is signed out
                 }
-                // ...
             }
         };
 
-        editTextEmailLogin = (EditText) findViewById(R.id.editTextEmailLogin);
-        editTextPasswordLogin = (EditText) findViewById(R.id.editTextPasswordLogin);
-        textViewSignup = (TextView) findViewById(R.id.textViewSignup);
-        buttonLogin = (Button) findViewById(R.id.buttonLogin);
-
         progressDialog = new ProgressDialog(this);
 
-        buttonLogin.setOnClickListener(this);
-        textViewSignup.setOnClickListener(this);
-    }
+        buttonRegister = (Button) findViewById(R.id.buttonRegister);
 
+        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+
+        textViewSignin = (TextView) findViewById(R.id.textViewSignin);
+
+        buttonRegister.setOnClickListener(this);
+        textViewSignin.setOnClickListener(this);
+
+    }
 
     @Override
     public void onClick(View view) {
-        if (view == buttonLogin) {
-            userLogin();
+        if (view == buttonRegister) {
+            registerUser();
         }
 
-        if (view == textViewSignup) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
+        if (view == textViewSignin) {
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
@@ -106,9 +121,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void userLogin() {
-        String email = editTextEmailLogin.getText().toString().trim();
-        String password = editTextPasswordLogin.getText().toString().trim();
+    private void registerUser() {
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
 
         // Email empty
         if (TextUtils.isEmpty(email)) {
@@ -126,22 +141,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Valid input, continue
 
-        progressDialog.setMessage("Signing in user..");
+        progressDialog.setMessage("Registering user..");
         progressDialog.show();
 
-        rooterAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        rooterAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                progressDialog.dismiss();
+                //Successfully registered and logged in
+                if(task.isSuccessful()) {
+                    UserInformation userInfo = new UserInformation(rooterAuth.getCurrentUser().getEmail());
+                    userInfo.setEmail(rooterAuth.getCurrentUser().getEmail());
+                    dbref.child("users").child(rooterAuth.getCurrentUser().getUid()).setValue(userInfo);
+                    rooterAuth.getCurrentUser().sendEmailVerification();
+                    progressDialog.dismiss();
+                    rooterAuth.signOut();
+                    toastMessage("Registered successfully. Please verify account via verification mail before logging in.");
 
-                if (task.isSuccessful()) {
-                    finish();
-                    //startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 } else {
-                    toastMessage("Failed to login. Please enter correct credentials");
+                    toastMessage("Failed to register, please try again");
+                    progressDialog.dismiss();
                 }
             }
         });
+
     }
 
     private void toastMessage(String message) {
